@@ -1,16 +1,20 @@
 import './cart.css'
 import Total from '../components/Total'
 import CartItem from '../components/CartItem'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import React, {useEffect, useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import {client} from "../api/api";
+import {useNavigate} from "react-router";
+import {clearCart} from "../redux/cartSlice";
 
 function Cart() {
     const [data, setData] = useState({
         cart: {},
         note: ''
     })
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [note, setNote] = useState(null)
     const cart = useSelector((state) => state.cart)
 
@@ -22,7 +26,7 @@ function Cart() {
     function handleClick() {
         client.post('cart/', {
             data,
-            note
+            note,
         })
             .then(function (response) {
                 console.log(response)
@@ -30,6 +34,8 @@ function Cart() {
             .catch(function (error) {
                 console.log(error)
             })
+        navigate('/')
+        dispatch(clearCart())
     }
 
     return (
