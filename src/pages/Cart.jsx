@@ -4,6 +4,7 @@ import CartItem from '../components/CartItem'
 import {useSelector} from 'react-redux'
 import React, {useEffect, useState} from 'react'
 import Button from 'react-bootstrap/Button';
+import {client} from "../api/api";
 
 function Cart() {
     const [data, setData] = useState({
@@ -15,25 +16,34 @@ function Cart() {
 
     useEffect(() => {
         setData(cart)
-    }, [])
+    }, [cart])
 
 
-    async function handleClick() {
-        // Send data to the backend via POST
-        // await fetch('https://demo.softeis.net/api/v1/cart/',
-        await fetch('http://127.0.0.1/api/v1/cart/',
-            {
-
-            method: 'POST',
-            body: JSON.stringify({
-                data,
-                note
-            }), // body data type must match "Content-Type" header
-            headers: {
-                'Content-Type': 'application/json'
-            }
+    function handleClick (){
+        const response = client.post('cart/', {
+            data,
+            note
         })
+        if (response.status === 200) return response.json();
+        else throw new Error();
     }
+    {/* const handleClick = () => {*/}
+    {/*    // Send data to the backend via POST*/}
+    //     // await fetch('https://demo.softeis.net/api/v1/cart/',
+    //     const response = fetch('http://127.0.0.1/api/v1/cart/',
+    //         {
+    {/*        method: 'POST',*/}
+    //         body: JSON.stringify({
+    //             data,
+    //             note
+    //         }), // body data type must match "Content-Type" header
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //     if (response.status === 200) return response.json();
+    //     else throw new Error();
+    // }
 
     return (
         <div className="cart">
