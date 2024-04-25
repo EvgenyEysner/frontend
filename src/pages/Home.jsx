@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import React, {useEffect, useRef, useState} from 'react'
 import {useNavigate, useParams} from 'react-router'
 import {Loader} from '../UI/Loader'
+import {client} from "../api/api";
 
 function Home() {
 
@@ -18,7 +19,6 @@ function Home() {
     const [bottom, setBottom] = useState(0)
     const params = useParams()
 
-    console.log(params)
     const getTotalQuantity = () => {
         let total = 0
         cart.forEach(item => {
@@ -28,26 +28,22 @@ function Home() {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            try {
-                const res = await fetch(
-                    `https://demo.softeis.net/api/v1/item/${params.name}`,
-                    // `http://127.0.0.1:8000/api/v1/item/${params.name}`,
-                )
-
-                const result = await res.json()
+        setLoading(true)
+        client.get(`item/${params.name}`)
+            .then(response => {
+                const result = response.data
                 setData(result)
                 console.log(result)
-            } catch (e) {
-                setError('Товар не найден')
-                console.error('Error: ', e)
-            } finally {
+            })
+            .catch(function (error) {
+                setError(error)
+                console.error(error)
+            })
+            .finally(
                 setLoading(false)
-            }
-        }
+            )
 
-        fetchData()
+
     }, [params.name])
 
     useEffect(() => {
