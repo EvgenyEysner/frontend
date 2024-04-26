@@ -7,13 +7,13 @@ import {useNavigate, useParams} from 'react-router'
 import {Loader} from '../UI/Loader'
 import {client} from "../api/api";
 
-function Home() {
+export const Home = () => {
 
     const navigate = useNavigate()
     const cart = useSelector((state) => state.cart)
 
     const button = useRef(null)
-    const [isLoading, setLoading] = useState(true)
+    const [isLoading, setLoading] = useState(false)
     const [data, setData] = useState(null)
     const [error, setError] = useState('')
     const [bottom, setBottom] = useState(0)
@@ -28,22 +28,23 @@ function Home() {
     }
 
     useEffect(() => {
-        setLoading(true)
-        client.get(`item/${params.name}`)
-            .then(response => {
-                const result = response.data
-                setData({result})
-                console.log(result)
-            })
-            .catch(function (error) {
-                setError(error)
-                console.error(error)
-            })
-            .finally(
-                setLoading(false)
-            )
-
-
+        const fetchData = async () => {
+            setLoading(true)
+            client.get(`item/${params.name}`)
+                .then(function (response) {
+                    console.log(response)
+                    setData(response.data)
+                })
+                .catch(function (error) {
+                    setError(error)
+                    console.error(error)
+                })
+                .finally(function () {
+                        setLoading(false)
+                    }
+                )
+        }
+        fetchData()
     }, [params.name])
 
     useEffect(() => {
@@ -111,5 +112,3 @@ function Home() {
         </div>
     )
 }
-
-export default Home
