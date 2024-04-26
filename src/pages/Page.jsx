@@ -10,10 +10,10 @@ export const Page = () => {
     return (
         <Container>
             <Routes>
-                <Route path="/scan" element={<Scanner />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/result/:name" element={<Home />} />
-                <Route path="*" element={<Main to="/" />} />
+                <Route path="/scan" element={<Scanner/>}/>
+                <Route path="/cart" element={<Cart/>}/>
+                <Route path="/result/:name" element={<Home/>}/>
+                <Route path="*" element={<Main to="/"/>}/>
             </Routes>
         </Container>
     )

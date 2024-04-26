@@ -32,7 +32,7 @@ function Home() {
         client.get(`item/${params.name}`)
             .then(response => {
                 const result = response.data
-                setData(result)
+                setData({result})
                 console.log(result)
             })
             .catch(function (error) {
