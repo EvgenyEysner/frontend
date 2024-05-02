@@ -36,7 +36,7 @@ export const Home = () => {
                     setData(response.data)
                 })
                 .catch(function (error) {
-                    setError(error)
+                    setError(error.message)
                     console.error(error)
                 })
                 .finally(function () {
