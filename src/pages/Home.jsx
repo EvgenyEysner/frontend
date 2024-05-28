@@ -27,23 +27,43 @@ export const Home = () => {
         return total
     }
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true)
+    //         client.get(`item/${params.name}`)
+    //             .then(function (response) {
+    //                 console.log(response)
+    //                 setData(response.data)
+    //             })
+    //             .catch(function (error) {
+    //                 setError(error.message)
+    //                 console.error(error)
+    //             })
+    //             .finally(function () {
+    //                     setLoading(false)
+    //                 }
+    //             )
+    //     }
+    //     fetchData()
+    // }, [params.name])
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            client.get(`item/${params.name}`)
-                .then(function (response) {
-                    console.log(response)
-                    setData(response.data)
-                })
-                .catch(function (error) {
-                    setError(error.message)
-                    console.error(error)
-                })
-                .finally(function () {
-                        setLoading(false)
-                    }
+            try {
+                const res = await fetch(
+                    `/api/v1/item/${params.name}`,
                 )
+                const result = await res.json()
+                setData(result)
+            } catch (e) {
+                setError('Товар не найден')
+                console.error('Error: ', e)
+            } finally {
+                setLoading(false)
+            }
         }
+
         fetchData()
     }, [params.name])
 

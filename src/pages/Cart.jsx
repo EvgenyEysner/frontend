@@ -4,7 +4,6 @@ import CartItem from '../components/CartItem'
 import {useDispatch, useSelector} from 'react-redux'
 import React, {useEffect, useState} from 'react'
 import Button from 'react-bootstrap/Button';
-import {client} from "../api/api";
 import {useNavigate} from "react-router";
 import {clearCart} from "../redux/cartSlice";
 
@@ -23,11 +22,21 @@ function Cart() {
     }, [cart])
 
 
-    function handleClick() {
-        client.post('cart/', {
-            data,
-            note,
-        })
+    const handleClick = async () => {
+        await fetch(
+            // 'https://demo.softeis.net/api/v1/cart',
+            '/api/v1/cart/', {
+                method: 'POST',
+                mode: 'cors',
+                // credentials: "same-origin",
+                // referrerPolicy: "no-referrer",
+                body: JSON.stringify({data, note}),
+                headers: {
+                    "Content-Type": "application/json",
+                    'Access-Control-Allow-Origin': '*',
+                },
+            }
+        )
             .then(function (response) {
                 console.log(response)
             })
