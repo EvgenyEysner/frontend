@@ -25,7 +25,7 @@ function Cart() {
     const handleClick = async () => {
         await fetch(
             // 'https://demo.softeis.net/api/v1/cart',
-            'https://demo.softeis.net/api/v1/cart/', {
+            'api/v1/cart/', {
                 method: 'POST',
                 mode: 'cors',
                 // credentials: "same-origin",

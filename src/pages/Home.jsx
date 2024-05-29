@@ -51,7 +51,7 @@ export const Home = () => {
             setLoading(true)
             try {
                 const res = await fetch(
-                    `https://demo.softeis.net/api/v1/item/${params.name}`, {
+                    `api/v1/item/${params.name}`, {
                         method: 'GET',
                         mode: "cors",
                         headers: {
