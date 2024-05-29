@@ -22,6 +22,7 @@
     "bootstrap": "^5.3.3",
     "cookies": "^0.9.1",
     "gh-pages": "^6.1.1",
+    "netlify-cli": "^17.25.0",
     "react": "17.0.2",
     "react-bootstrap": "^2.10.1",
     "react-dom": "17.0.2",
