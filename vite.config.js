@@ -11,5 +11,11 @@ export default defineConfig({
             '/api': 'https://demo.softeis.net',
         },
     },
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+            // include: [/linked-dep/, /node_modules/],
+        },
+    },
     plugins: [react(), basicSsl()],
 })
