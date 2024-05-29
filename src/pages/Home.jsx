@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import React, {useEffect, useRef, useState} from 'react'
 import {useNavigate, useParams} from 'react-router'
 import {Loader} from '../UI/Loader'
+import {client} from "../api/api";
 
 export const Home = () => {
 
@@ -51,14 +52,7 @@ export const Home = () => {
             setLoading(true)
             try {
                 const res = await fetch(
-                    `api/v1/item/${params.name}`, {
-                        method: 'GET',
-                        mode: "cors",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
-                    }
+                    `/api/v1/item/${params.name}`,
                 )
                 const result = await res.json()
                 setData(result)
