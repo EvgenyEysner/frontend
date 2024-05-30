@@ -5,7 +5,6 @@ import {VitePWA} from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: '/',
     server: {
         proxy: {
             // '/api': 'http://127.0.0.1:8000',
