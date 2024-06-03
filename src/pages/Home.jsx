@@ -52,7 +52,7 @@ export const Home = () => {
             setLoading(true)
             try {
                 const res = await fetch(
-                    `/api/v1/item/${params.name}`,
+                    `/api/v1/item/${params.name}`
                 )
                 const result = await res.json()
                 setData(result)

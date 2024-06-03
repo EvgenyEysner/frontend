@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from "react-bootstrap/Container";
-import {client} from "../api/products";
+// import {client} from "../api/products";
 import {useNavigate} from 'react-router'
 
 export const Login = () => {
@@ -16,25 +16,31 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
 
-    useEffect(() => {
-        client.get("/user")
-            .then(function (res) {
-                setCurrentUser(true);
-            })
-            .catch(function (error) {
-                setCurrentUser(false);
-            });
-    }, []);
+    console.log(email, password)
+
+    // useEffect(() => {
+    //     fetch("api/v1/user", {
+    //         method: 'GET'
+    //     })
+    //         .then(function (res) {
+    //             setCurrentUser(true);
+    //         })
+    //         .catch(function (error) {
+    //             setCurrentUser(false);
+    //         });
+    // }, []);
 
     function submitLogin(e) {
         e.preventDefault();
-        client.post(
-            "/login",
+        fetch(
+            "api/v1/login/",
             {
-                email: email,
-                password: password,
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({email, password}),
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': 'nuqFzumo8avSIQuuXDzBP2HOLYVPtK90'
                 },
                 withCredentials: true,
             }
@@ -42,7 +48,7 @@ export const Login = () => {
             setCurrentUser(true);
         });
         e.target.reset()
-        navigate('/')
+        // navigate('/')
     }
 
     // function submitLogout(e) {
