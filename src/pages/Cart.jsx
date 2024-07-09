@@ -6,12 +6,17 @@ import React, {useEffect, useState} from 'react'
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from "react-router";
 import {clearCart} from "../redux/cartSlice";
+import {useAuthStore} from "../redux/auth";
 
 function Cart() {
     const [data, setData] = useState({
         cart: {},
-        note: ''
+        note: '',
+        user: {},
     })
+
+    const {isAuth} = useAuthStore()
+    const token = useAuthStore.getState().access
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [note, setNote] = useState(null)
@@ -23,29 +28,31 @@ function Cart() {
 
 
     const handleClick = async () => {
-        await fetch(
-            // 'https://demo.softeis.net/api/v1/cart',
-            '/api/v1/cart/', {
-                method: 'POST',
-                mode: 'cors',
-                // credentials: "same-origin",
-                // referrerPolicy: "no-referrer",
-                body: JSON.stringify({data, note}),
-                headers: {
-                    "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                },
-            }
-        )
-            .then(function (response) {
-                console.log(response)
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-        navigate('/')
-        dispatch(clearCart())
+        if (isAuth) {
+            await fetch(
+                // 'https://demo.softeis.net/api/v1/cart',
+                '/api/v1/cart/', {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify({data, note}),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+            navigate('/')
+            dispatch(clearCart())
+        }
     }
+
 
     return (
         <div className="cart">

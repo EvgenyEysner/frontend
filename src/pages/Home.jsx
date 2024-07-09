@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import React, {useEffect, useRef, useState} from 'react'
 import {useNavigate, useParams} from 'react-router'
 import {Loader} from '../UI/Loader'
-import {client} from "../api/api";
+// import {client} from "../api/api";
 
 export const Home = () => {
 
@@ -26,26 +26,6 @@ export const Home = () => {
         })
         return total
     }
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true)
-    //         client.get(`item/${params.name}`)
-    //             .then(function (response) {
-    //                 console.log(response)
-    //                 setData(response.data)
-    //             })
-    //             .catch(function (error) {
-    //                 setError(error.message)
-    //                 console.error(error)
-    //             })
-    //             .finally(function () {
-    //                     setLoading(false)
-    //                 }
-    //             )
-    //     }
-    //     fetchData()
-    // }, [params.name])
 
     useEffect(() => {
         const fetchData = async () => {

@@ -1,14 +1,22 @@
-import axios from 'axios';
+export const loginRequest = async (email, password) => {
+    const url = "api/v1/token/"; // You may need to specify the full URL depending on your setup
+    const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({email, password}),
+        credentials: 'include'
+    };
 
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.withCredentials = true;
-
-export const client = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/v1",
-    // baseURL: "https://demo.softeis.net/api/v1",
-    headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return await response.json(); // Assuming the server responds with JSON data
+    } catch (error) {
+        throw new Error(`Login request failed: ${error.message}`);
     }
-});
+};

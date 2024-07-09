@@ -1,12 +1,18 @@
-import React from 'react';
+import React from 'react'
+import {Outlet} from 'react-router-dom'
+import {Toaster} from 'react-hot-toast'
+import {useNavigate} from 'react-router'
 import {NavBar} from "./Header/NavBar";
-import {Footer} from "./Footer/Footer";
 
 export const Layout = () => {
+    const navigate = useNavigate()
     return (
-        <>
+        <div>
             <NavBar/>
-            <Footer/>
-        </>
+            <Toaster/>
+            <div className='min-h-[1000px] bg-white dark:bg-gray-900'>
+                <Outlet/>
+            </div>
+        </div>
     )
 }
