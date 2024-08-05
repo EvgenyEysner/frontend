@@ -1,16 +1,17 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Page} from "./pages/Page";
-import {Footer} from "./components/Footer/Footer";
-import React from "react";
+import { AuthRoutes } from './components/Routes/AuthRoutes'
+// import {Page} from "./pages/Page";
+import React from 'react'
+import { Footer } from './components/Footer/Footer'
 
 function App() {
-    return (
-        <>
-            <Page/>
-            <Footer/>
-        </>
-    )
+  return (
+    <>
+      <AuthRoutes />
+      <Footer />
+    </>
+  )
 }
 
 export default App

@@ -1,8 +1,8 @@
-.container{
+.container {
   background: white;
 }
 
-.item{
+.item {
   display: flex;
   flex-direction: column;
   z-index: 1;
@@ -14,11 +14,11 @@
   padding: 20px;
 }
 
-.item__rating__star{
-  color: #FEBD69;
+.item__rating__star {
+  color: #febd69;
 }
 
-.item > img{
+.item > img {
   max-height: 200px;
   width: 100%;
   object-fit: contain;
@@ -26,7 +26,7 @@
 }
 
 .item > button {
-  background: #FFD814;
+  background: #ffd814;
   margin-top: 10px;
   color: #111;
   border-radius: 20px;
@@ -39,14 +39,14 @@
 }
 
 .item > button:active {
-  background: #FFD814;
+  background: #ffd814;
 }
 
-.item__price{
+.item__price {
   margin-top: 5px;
 }
 
-.item__info{
+.item__info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -54,18 +54,45 @@
   line-height: 25px;
 }
 
-@media(max-width: 786px){
-  .item__info{
+.cartItem__incrDec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  width: 100px;
+}
+
+.cartItem__incrDec button {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gainsboro;
+  border: none;
+  border-radius: 100px;
+}
+
+.cartItem__incrDec button:hover {
+  box-shadow: 0 2px 2px gray;
+}
+
+.cartItem__incrDec button:active {
+  box-shadow: unset;
+}
+
+@media (max-width: 786px) {
+  .item__info {
     height: 120px;
   }
 }
 
-@media(max-width: 600px){
-  .item{
+@media (max-width: 600px) {
+  .item {
     margin-bottom: 10px;
   }
 
-  .item__info{
+  .item__info {
     justify-content: unset;
   }
 }

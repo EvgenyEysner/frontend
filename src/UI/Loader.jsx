@@ -1,7 +1,7 @@
-export const Loader = () => {
-	return (
-		<div className='spinner-border' role='status'>
-			<span className='sr-only'>Loading...</span>
-		</div>
-	);
-};
+export const Loader = ({ color = '#2B3035' }) => {
+  return (
+    <div className='spinner-border' role='status' style={{ color }}>
+      <span className='sr-only'>Loading...</span>
+    </div>
+  )
+}
