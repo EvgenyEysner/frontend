@@ -90,6 +90,13 @@
   cursor: pointer;
 }
 
+.result__error {
+  font-size: 32px;
+  font-weight: 500;
+  max-width: 600px;
+  text-align: center;
+}
+
 @media screen and (max-width: 992px) {
   .result__button button {
     width: 60%;
@@ -100,11 +107,8 @@
   .result__button {
     display: flex;
     justify-content: center;
-    position: fixed;
-    bottom: 0;
     width: 100%;
     padding: 30px;
-    background: #fff;
   }
   .home__row {
     grid-template-columns: auto;

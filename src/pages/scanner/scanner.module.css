@@ -1,0 +1,28 @@
+.scanner {
+  width: 60%;
+  margin: 0 auto;
+  margin-top: 30px;
+  border-radius: 60px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 992px) {
+  .scanner {
+    border-radius: 42px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .scanner {
+    border-radius: 26px;
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .scanner {
+    border-radius: 16px;
+    width: 100%;
+    margin-top: 20px;
+  }
+}

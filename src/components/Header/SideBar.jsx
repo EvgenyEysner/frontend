@@ -19,17 +19,37 @@ export const SideBar = () => {
           <Offcanvas.Title>Menü</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <div className='flex flex-col gap-3'>
-            <Link onClick={handleClose} to={'/'} className='flex gap-2 items-center'>
+          <div className='d-flex flex-column gap-3'>
+            <Link
+              onClick={handleClose}
+              to={'/'}
+              className='d-flex gap-2 align-items-center text-decoration-none'
+              style={{ color: '#2b3035' }}
+            >
               <FaHouse size={24} /> Home
             </Link>
-            <Link onClick={handleClose} to={'#link'} className='flex gap-2 items-center'>
+            <Link
+              onClick={handleClose}
+              to={'#link'}
+              className='d-flex gap-2 align-items-center text-decoration-none'
+              style={{ color: '#2b3035' }}
+            >
               <FaUser size={24} /> Benutzer
             </Link>
-            <Link onClick={handleClose} to={'/scan'} className='flex gap-2 items-center'>
+            <Link
+              onClick={handleClose}
+              to={'/scan'}
+              className='d-flex gap-2 align-items-center text-decoration-none'
+              style={{ color: '#2b3035' }}
+            >
               <FaBarcode size={24} /> Scanner
             </Link>
-            <Link onClick={handleClose} to={'/cart'} className='flex gap-2 items-center'>
+            <Link
+              onClick={handleClose}
+              to={'/cart'}
+              className='d-flex gap-2 align-items-center text-decoration-none'
+              style={{ color: '#2b3035' }}
+            >
               <FaCartShopping size={24} /> Korb
             </Link>
           </div>

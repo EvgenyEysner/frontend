@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import CartItem from '../../components/CartItem/CartItem'
-import Total from '../../components/Total'
+import Total from '../../components/Total/Total'
 import { useAuthStore } from '../../redux/auth'
 import { clearCart } from '../../redux/cartSlice'
 import styles from './cart.module.css'
@@ -71,7 +71,7 @@ function Cart() {
             />
           ))}
         </div>
-        <div className='d-flex flex-column form-outline' id='text'>
+        <div className='d-flex flex-column form-outline mt-2' id='text'>
           <label className='form-label' htmlFor='text'>
             Notiz
           </label>

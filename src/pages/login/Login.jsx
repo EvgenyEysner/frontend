@@ -5,7 +5,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { loginRequest } from '../../api/api'
 import { useAuthStore } from '../../redux/auth'
 
-import { Loader } from '../../UI/Loader'
+import { Loader } from '../../UI/loader/Loader'
 import styles from './login.module.css'
 
 export const Login = () => {
@@ -66,7 +66,7 @@ export const Login = () => {
           <input
             value={password}
             type={isVisiblePassword ? 'text' : 'password'}
-            className='form-control'
+            className='form-control pe-5'
             placeholder='**********'
             name='password'
             id='password'
@@ -76,12 +76,14 @@ export const Login = () => {
           {isVisiblePassword ? (
             <FaRegEyeSlash
               onClick={() => setVisiblePassword(false)}
-              className='cursor-pointer position-absolute top-50 end-4 translate-middle-y'
+              className='position-absolute top-50 end-0 me-3 translate-middle-y'
+              role='button'
             />
           ) : (
             <FaRegEye
               onClick={() => setVisiblePassword(true)}
-              className='cursor-pointer position-absolute top-50 end-4 translate-middle-y'
+              className='position-absolute top-50 end-0 me-3 translate-middle-y'
+              role='button'
             />
           )}
         </div>
@@ -110,7 +112,10 @@ export const Login = () => {
         </button>
       </div>
       <p className='forgot-password text-right text-black small mt-1' style={{ opacity: '0.6' }}>
-        Forgot <a href='#'>password?</a>
+        Forgot{' '}
+        <a href='#' style={{ color: 'inherit', textDecoration: 'none' }}>
+          password?
+        </a>
       </p>
     </form>
   )

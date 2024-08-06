@@ -8,7 +8,7 @@ export const Layout = () => {
     <>
       <NavBar />
       <Toaster />
-      <div className='px-3 pb-3 flex-1 bg-white dark:bg-gray-900'>
+      <div className='px-3 pb-3 flex-grow-1 bg-white bg-body-dark'>
         <Outlet />
       </div>
     </>

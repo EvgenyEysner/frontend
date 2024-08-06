@@ -1,6 +1,6 @@
+import { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { decrementQuantity, incrementQuantity, removeItem } from '../../redux/cartSlice'
-// import './cartItem.css'
 import styles from './cartItem.module.css'
 
 function CartItem({ id, name, image, description, ean, stock, unit, quantity = 0 }) {
@@ -28,4 +28,4 @@ function CartItem({ id, name, image, description, ean, stock, unit, quantity = 0
   )
 }
 
-export default CartItem
+export default memo(CartItem)

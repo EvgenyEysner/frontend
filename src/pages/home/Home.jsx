@@ -3,9 +3,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import Item from '../../components/Item/Item'
-import { Loader } from '../../UI/Loader'
+import { Loader } from '../../UI/loader/Loader'
 import styles from './home.module.css'
-// import {client} from "../api/api";
 
 export const Home = () => {
   const navigate = useNavigate()
@@ -30,11 +29,13 @@ export const Home = () => {
       setLoading(true)
       try {
         const res = await fetch(`/api/v1/item/${params.name}`)
+
+        if (!res.ok) throw new Error()
+
         const result = await res.json()
         setData(result)
       } catch (e) {
         setError('Товар не найден')
-        console.error('Error: ', e)
       } finally {
         setLoading(false)
       }
@@ -73,9 +74,9 @@ export const Home = () => {
             paddingTop: '30px',
           }}
         >
-          <p className='result__error'>{error}</p>
+          <p className={styles.result__error}>{error}</p>
         </div>
-        <div className='result__button' ref={button}>
+        <div className={styles.result__button} ref={button}>
           <button onClick={() => navigate('/scan')}>Scan again</button>
         </div>
       </>

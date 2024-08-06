@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+.main__button {
+  padding: 30px;
+  border-radius: 30px;
+  border: 0;
+  background: #c3c1c1;
+  cursor: pointer;
+}
+.main__img {
+  width: 408px;
+}
+
+@media screen and (max-width: 576px) {
+  .main {
+    padding: 20px;
+  }
+  .main__button {
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .main__img {
+    width: 100%;
+  }
+}
