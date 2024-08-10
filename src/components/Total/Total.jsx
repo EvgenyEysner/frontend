@@ -1,9 +1,9 @@
 import { memo, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useCartStore } from '../../store/cart'
 import styles from './total.module.css'
 
 function Total() {
-  const cart = useSelector((state) => state.cart)
+  const { cart } = useCartStore()
 
   const totalItems = useMemo(() => {
     let totalQuantity = 0

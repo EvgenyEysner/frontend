@@ -1,48 +1,49 @@
-import axios from 'axios';
-import {useAuthStore} from '../redux/auth';
-import {jwtDecode} from "jwt-decode";
+import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
+import { useAuthStore } from '../store/auth'
 
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+const baseURL = import.meta.env.VITE_BACKEND_URL
 
 export const axi = axios.create({
-    baseURL
-});
+  baseURL,
+})
 
 export const authAxios = axios.create({
-    baseURL,
-    withCredentials: true
-});
+  baseURL,
+  withCredentials: true,
+})
 
 function logout() {
-    useAuthStore.getState().logout();
-    window.location.href = 'api/v1/login';
+  useAuthStore.getState().logout()
+  window.location.href = 'api/v1/login'
 }
 
 async function refreshToken() {
-    const refreshToken = useAuthStore.getState().refresh;
-    try {
-        const response = await axi.post('api/v1/refresh/', {refresh: refreshToken});
-        useAuthStore.getState().setToken(response.data.access, response.data.refresh);
-        return response.data.access;
-    } catch (err) {
-        logout();
-        throw new Error("Session expired, please log in again.");
-    }
+  const refreshToken = useAuthStore.getState().refresh
+  try {
+    const response = await axi.post('api/v1/refresh/', { refresh: refreshToken })
+    useAuthStore.getState().setToken(response.data.access, response.data.refresh)
+    return response.data.access
+  } catch (err) {
+    logout()
+    throw new Error('Session expired, please log in again.')
+  }
 }
 
 authAxios.interceptors.request.use(async (config) => {
-    let token = useAuthStore.getState().access;
-    const decodedToken = jwtDecode(token);
-    const expiration = new Date(decodedToken.exp * 1000);
-    const now = new Date();
+  let token = useAuthStore.getState().access
+  const decodedToken = jwtDecode(token)
+  const expiration = new Date(decodedToken.exp * 1000)
+  const now = new Date()
 
-    if (expiration.getTime() - now.getTime() < 1000 * 60 * 5) {  // Refresh if less than 5 minutes left
-        token = await refreshToken();
-    }
+  if (expiration.getTime() - now.getTime() < 1000 * 60 * 5) {
+    // Refresh if less than 5 minutes left
+    token = await refreshToken()
+  }
 
-    config.headers = {
-        Authorization: `Bearer ${token}`,
-    };
+  config.headers = {
+    Authorization: `Bearer ${token}`,
+  }
 
-    return config;
-});
+  return config
+})
