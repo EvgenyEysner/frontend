@@ -7,8 +7,8 @@
 }
 
 .home__row {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  /* display: grid;
+  grid-template-columns: repeat(6, 1fr); */
   gap: 10px;
   width: 95%;
   margin: 0 auto;
@@ -48,6 +48,7 @@
   bottom: 120px;
   right: 15%;
   z-index: 1;
+  cursor: pointer;
 }
 
 .shopping__cart:active {

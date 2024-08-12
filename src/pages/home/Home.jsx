@@ -1,20 +1,20 @@
 import { ShoppingCart } from '@mui/icons-material'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import Item from '../../components/Item/Item'
+import { useCartStore } from '../../store/cart'
 import { Loader } from '../../UI/loader/Loader'
 import styles from './home.module.css'
 
 export const Home = () => {
   const navigate = useNavigate()
-  const cart = useSelector((state) => state.cart)
-
   const button = useRef(null)
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(true)
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
   const params = useParams()
+
+  const { cart } = useCartStore()
 
   const getTotalQuantity = useMemo(() => {
     let total = 0
@@ -46,20 +46,8 @@ export const Home = () => {
 
   if (isLoading)
     return (
-      <div className='d-flex flex-column gap-4'>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: '30px',
-          }}
-        >
-          <Loader />
-        </div>
-        <div className={styles.result__button} ref={button}>
-          <button onClick={() => navigate('/')}>Scan again</button>
-        </div>
+      <div className='d-flex gap-4 pt-5 justify-content-center'>
+        <Loader />
       </div>
     )
 
@@ -92,12 +80,13 @@ export const Home = () => {
             description={data.description}
             ean={data.ean}
             stock={data.stock}
+            onStock={data.on_stock}
             image={data.image}
           />
         </div>
       </div>
       <div className={styles.shopping__cart} onClick={() => navigate('/cart')}>
-        <ShoppingCart id='cartIcon' style={{ width: '32px', height: '32px' }} />
+        <ShoppingCart id='cartIcon' style={{ width: '28px', height: '28px', color: 'white' }} />
         {getTotalQuantity !== 0 && <p>{getTotalQuantity > 99 ? '99+' : getTotalQuantity}</p>}
       </div>
     </div>

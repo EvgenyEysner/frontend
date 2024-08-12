@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { loginRequest } from '../../api/api'
-import { useAuthStore } from '../../redux/auth'
+import { useAuthStore } from '../../store/auth'
 
 import { Loader } from '../../UI/loader/Loader'
 import styles from './login.module.css'
@@ -15,7 +15,6 @@ export const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isCheck, setCheck] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   console.log(error)
@@ -88,26 +87,8 @@ export const Login = () => {
           )}
         </div>
       </div>
-      <div className='mb-3'>
-        <div className='custom-control custom-checkbox gap-2 d-flex align-items-center'>
-          <input
-            checked={isCheck}
-            onChange={(e) => setCheck(e.target.checked)}
-            type='checkbox'
-            className='custom-control-input'
-            id='customCheck1'
-          />
-          <label htmlFor='customCheck1' className='text-black small' style={{ opacity: '0.6' }}>
-            Принимаю условия
-          </label>
-        </div>
-      </div>
       <div className='d-grid'>
-        <button
-          disabled={!password || !email || !isCheck}
-          type='submit'
-          className='btn btn-primary'
-        >
+        <button disabled={!password || !email} type='submit' className='btn btn-primary'>
           Login
         </button>
       </div>

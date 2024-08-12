@@ -29,8 +29,9 @@
   background: #ffd814;
   margin-top: 10px;
   color: #111;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 8px 30px;
+  width: 100%;
   border: none;
 }
 
@@ -71,21 +72,26 @@
   background-color: gainsboro;
   border: none;
   border-radius: 100px;
+  transition: scale 0.2s ease;
 }
 
 .cartItem__incrDec button:hover {
-  box-shadow: 0 2px 2px gray;
+  scale: 1.1;
 }
 
 .cartItem__incrDec button:active {
-  box-shadow: unset;
+  scale: 0.9;
 }
 
-@media (max-width: 786px) {
+.cartItem__incrDec button:disabled {
+  scale: 1;
+}
+
+/* @media (max-width: 786px) {
   .item__info {
     height: 120px;
   }
-}
+} */
 
 @media (max-width: 600px) {
   .item {

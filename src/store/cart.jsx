@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export const useAuthStore = create(
+export const useCartStore = create(
   persist(
     (set, get) => ({
       cart: [],
@@ -25,12 +25,15 @@ export const useAuthStore = create(
       },
       incrementQuantity: (id) => {
         const newCart = get().cart.map((el) => {
+          console.log(el, id)
           if (el.id === id) {
-            return { ...el, quantity: el.quantity++ }
+            return { ...el, quantity: el.quantity + 1 }
           }
 
           return el
         })
+
+        console.log(newCart)
 
         set({ cart: newCart })
       },
@@ -38,7 +41,7 @@ export const useAuthStore = create(
         const newCart = get()
           .cart.map((el) => {
             if (el.id === id) {
-              return { ...el, quantity: el.quantity-- }
+              return { ...el, quantity: el.quantity - 1 }
             }
 
             return el

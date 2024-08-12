@@ -1,11 +1,19 @@
 import { useState } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import { FaUser } from 'react-icons/fa'
-import { FaBarcode, FaBars, FaCartShopping, FaHouse } from 'react-icons/fa6'
+import {
+  FaArrowRightFromBracket,
+  FaBarcode,
+  FaBars,
+  FaCartShopping,
+  FaHouse,
+} from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
+import useLogout from '../../hooks/useLogout'
 
 export const SideBar = () => {
   const [show, setShow] = useState(false)
+  const logout = useLogout()
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -52,6 +60,14 @@ export const SideBar = () => {
             >
               <FaCartShopping size={24} /> Korb
             </Link>
+            <button
+              className='d-flex gap-2 align-items-center text-decoration-none p-0'
+              style={{ color: '#2b3035', background: 'none', outline: 'none', border: 'none' }}
+              onClick={logout}
+            >
+              <FaArrowRightFromBracket size={24} />
+              Logout
+            </button>
           </div>
         </Offcanvas.Body>
       </Offcanvas>
