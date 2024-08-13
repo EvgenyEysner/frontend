@@ -1,14 +1,15 @@
-FROM node
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY . .
-RUN npm i --force
+EXPOSE 3000
+
+COPY package.json package-lock.json ./
+
+RUN npm install --silent
 RUN npm run build
 
-COPY . .
-
-## EXPOSE [Port you mentioned in the vite.config file]
+COPY . ./
 
 EXPOSE 3000
 
