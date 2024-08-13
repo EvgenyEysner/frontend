@@ -24,6 +24,7 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'dist',
     rollupOptions: {
       input: {
         // eslint-disable-next-line no-undef
