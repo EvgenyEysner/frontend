@@ -2,14 +2,14 @@ FROM node
 
 WORKDIR /app
 
-COPY package.json .
-RUN npm i
+COPY . .
+RUN npm i --force
 RUN npm run build
 
 COPY . .
 
 ## EXPOSE [Port you mentioned in the vite.config file]
 
-EXPOSE 5173
+EXPOSE 4173
 
 CMD ["npm", "run", "preview"]
