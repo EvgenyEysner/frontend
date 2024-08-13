@@ -1,5 +1,6 @@
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
@@ -20,6 +21,14 @@ export default defineConfig({
     proxy: {
       // '/api': 'http://127.0.0.1:8000',
       '/api': 'https://demo.softeis.net',
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        // eslint-disable-next-line no-undef
+        main: resolve(__dirname, 'index.html'),
+      },
     },
   },
   plugins: [
