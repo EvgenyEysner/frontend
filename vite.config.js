@@ -9,6 +9,14 @@ export default defineConfig({
     exclude: ['@preflower/barcode-detector-polyfill'],
   },
   server: {
+    port: 3000,
+    proxy: {
+      // '/api': 'http://127.0.0.1:8000',
+      '/api': 'https://demo.softeis.net',
+    },
+  },
+  preview: {
+    port: 3000,
     proxy: {
       // '/api': 'http://127.0.0.1:8000',
       '/api': 'https://demo.softeis.net',
