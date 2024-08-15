@@ -1,15 +1,15 @@
-FROM node
+# Verwenden Sie das offizielle Nginx-Bild als Basisbild
+FROM nginx:alpine
 
-WORKDIR /app
+# Kopieren Sie die Build-Dateien Ihrer React-PWA in das Nginx-Webverzeichnis
+COPY dist /usr/share/nginx/html
 
-COPY . .
-RUN npm i --force
-RUN npm run build
+# Kopieren Sie die benutzerdefinierte Nginx-Konfigurationsdatei
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY . .
+# Exponieren Sie Port 80 für HTTP
+EXPOSE 80
 
-## EXPOSE [Port you mentioned in the vite.config file]
+# Starten Sie Nginx, wenn der Container startet
+CMD ["nginx", "-g", "daemon off;"]
 
-EXPOSE 4173
-
-CMD ["npm", "run", "preview"]
