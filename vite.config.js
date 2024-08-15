@@ -11,17 +11,25 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    watch: {
+      usePolling: true,
+    },
     proxy: {
-      // '/api': 'http://127.0.0.1:8000',
       '/api': 'https://demo.softeis.net',
     },
+    host: true,
+    strictPort: true,
   },
   preview: {
     port: 3000,
     proxy: {
-      // '/api': 'http://127.0.0.1:8000',
       '/api': 'https://demo.softeis.net',
     },
+    watch: {
+      usePolling: true,
+    },
+    host: true,
+    strictPort: true,
   },
   build: {
     outDir: 'dist',

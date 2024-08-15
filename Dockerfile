@@ -1,16 +1,10 @@
-FROM node:18-alpine
-
+FROM node:18.13.0-alpine
 WORKDIR /app
 
-EXPOSE 3000
+COPY ./package.json .
+RUN npm install
 
-COPY package.json package-lock.json ./
-COPY . ./
-
-RUN npm install --silent
+COPY . .
 RUN npm run build
-
-
-EXPOSE 3000
 
 CMD ["npm", "run", "preview"]
