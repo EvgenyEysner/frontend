@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 docker-compose.yml
 dist
+dev-dist
 dist-ssr
 *.local
 ./.env

@@ -23,7 +23,6 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "mdb-react-ui-kit": "^8.0.0",
-    "postcss": "^8.4.38",
     "react": "^18",
     "react-barcode-scanner": "^2.1.0",
     "react-bootstrap": "^2.10.1",
