@@ -14,7 +14,7 @@ FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY ./nginx/ngix.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8080
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
 #FROM node:20.11.0-alpine
 #WORKDIR /app
