@@ -1,13 +1,31 @@
-FROM node:20.11.0-alpine
+# Step 1: Build the application
+FROM node:18 AS builder
 WORKDIR /app
-
-COPY ./package.json .
-RUN npm install
+COPY package.json ./
 
 COPY . .
-RUN npm run build
+RUN yarn
+RUN yarn build
 
-CMD ["npm", "run", "preview"]
+WORKDIR /app
+
+# Step 2: Set up the production environment
+FROM nginx:stable-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY ./nginx/ngix.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
+#FROM node:20.11.0-alpine
+#WORKDIR /app
+#
+#COPY ./package.json .
+#RUN npm install
+#
+#COPY . .
+#RUN npm run build
+#
+#CMD ["npm", "run", "preview"]
 # Verwenden Sie das offizielle Nginx-Bild als Basisbild
 # FROM nginx:alpine
 
