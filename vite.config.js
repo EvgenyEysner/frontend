@@ -51,6 +51,33 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      // includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      manifest: {
+        "short_name": "Stocky",
+        "name": "Zarg Lagerverwaltung & Barcode Sanner",
+        "icons": [
+          {
+            "src": "favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+          },
+          {
+            "src": "logo192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+          },
+          {
+            "src": "logo256x256.png",
+            "type": "image/png",
+            "sizes": "256x256"
+          }
+        ],
+        "start_url": ".",
+        "scope": ".",
+        "display": "standalone",
+        "theme_color": "#000000",
+        "background_color": "#ffffff"
+      }
     }),
   ],
 })
