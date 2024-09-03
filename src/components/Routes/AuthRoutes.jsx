@@ -6,6 +6,7 @@ import { Login } from '../../pages/login/Login.jsx'
 import { Main } from '../../pages/main/Main.jsx'
 import { Scanner } from '../../pages/scanner/Scanner.jsx'
 import { Layout } from '../Layout.jsx'
+import { Item } from '../../pages/item/Item.jsx'
 import { PrivateRoute } from './PrivateRoute'
 
 export const AuthRoutes = () => {
@@ -17,6 +18,7 @@ export const AuthRoutes = () => {
           <Route path='/' element={<Main />} />
           <Route path='/scan' element={<Scanner />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/items' element={<Item />} />
           <Route path='/result/:name' element={<Home />} />
         </Route>
       </Route>

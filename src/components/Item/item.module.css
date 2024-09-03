@@ -26,9 +26,9 @@
 }
 
 .item > button {
-  background: #ffd814;
+  background: #56585a;
   margin-top: 10px;
-  color: #111;
+  color: #ffffff;
   border-radius: 10px;
   padding: 8px 30px;
   width: 100%;
@@ -36,7 +36,8 @@
 }
 
 .item > button:hover {
-  background: #f7d322;
+  background: #d7d5cc;
+  color: #1a1d20;
 }
 
 .item > button:active {

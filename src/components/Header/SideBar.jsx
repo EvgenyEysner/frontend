@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import { FaUser } from 'react-icons/fa'
+import { FaUser, FaServer } from 'react-icons/fa'
 import {
   FaArrowRightFromBracket,
   FaBarcode,
@@ -38,11 +38,11 @@ export const SideBar = () => {
             </Link>
             <Link
               onClick={handleClose}
-              to={'#link'}
+              to={'/items'}
               className='d-flex gap-2 align-items-center text-decoration-none'
               style={{ color: '#2b3035' }}
             >
-              <FaUser size={24} /> Benutzer
+              <FaServer size={24} /> Bestand
             </Link>
             <Link
               onClick={handleClose}

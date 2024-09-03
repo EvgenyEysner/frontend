@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { AuthRoutes } from './components/Routes/AuthRoutes'
-// import {Page} from "./pages/Page";
 import React from 'react'
 import { Footer } from './components/Footer/Footer'
 

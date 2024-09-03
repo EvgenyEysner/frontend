@@ -28,7 +28,7 @@ function Item({ id, name, image, description, ean, stock, onStock }) {
             })
           }
         >
-          Add to Cart
+          Hinzufügen
         </button>
       )}
 

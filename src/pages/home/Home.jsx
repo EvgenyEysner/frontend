@@ -5,6 +5,7 @@ import Item from '../../components/Item/Item'
 import { useCartStore } from '../../store/cart'
 import { Loader } from '../../UI/loader/Loader'
 import styles from './home.module.css'
+import {useAuthStore} from "../../store/auth";
 
 export const Home = () => {
   const navigate = useNavigate()
@@ -13,6 +14,7 @@ export const Home = () => {
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
   const params = useParams()
+  const token = useAuthStore.getState().access
 
   const { cart } = useCartStore()
 
@@ -28,14 +30,23 @@ export const Home = () => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`/api/v1/item/${params.name}`)
+        const res = await fetch(`/api/v1/item/${params.name}`, {
+            method: 'GET',
+            mode: 'cors',
+            body: JSON.stringify(),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                Authorization: `Bearer ${token}`,
+            },
+        })
 
         if (!res.ok) throw new Error()
 
         const result = await res.json()
         setData(result)
       } catch (e) {
-        setError('Товар не найден')
+        setError('Artikel nicht gefunden')
       } finally {
         setLoading(false)
       }
