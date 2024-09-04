@@ -4,6 +4,8 @@ import { useAuthStore } from '../../store/auth'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import {Link} from "react-router-dom";
+import {useParams} from "react-router";
 
 export const Item = () => {
   const [data, setData] = useState([])
@@ -12,6 +14,7 @@ export const Item = () => {
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true) // Specifies whether further articles can be loaded
   const observer = useRef() // Reference for the Intersection Observer
+  const params = useParams()
   const token = useAuthStore.getState().access
 
   const lastItemRef = useCallback(
@@ -111,13 +114,21 @@ export const Item = () => {
                     <Card.Subtitle className='mb-2 text-muted'>Einheit: {item.unit}</Card.Subtitle>
                     <Card.Subtitle className='mb-2 text-muted'>EAN: {item.ean}</Card.Subtitle>
                     <Card.Subtitle className='mb-2 text-muted'>Lager: {item.stock}</Card.Subtitle>
+
+                    <Link
+                        to={`/edit-item/${item.ean}`}
+                        className='d-flex gap-2 align-items-center text-decoration-none'
+                        style={{ color: '#2b3035' }}
+                    >
+                      <b>Bearbeiten</b>
+                    </Link>
                   </Card.Body>
                 </Card>
               </Col>
             </Row>
           )
         }
-      })}
+      })})
       {isLoading && <p>Loading...</p>}
       {!hasMore && <p>Keine weiteren Artikel</p>}
     </div>

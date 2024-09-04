@@ -8,6 +8,7 @@ import { Scanner } from '../../pages/scanner/Scanner.jsx'
 import { Layout } from '../Layout.jsx'
 import { Item } from '../../pages/item/Item.jsx'
 import { PrivateRoute } from './PrivateRoute'
+import {Update} from "../../pages/item/UpdateItem";
 
 export const AuthRoutes = () => {
   return (
@@ -19,6 +20,7 @@ export const AuthRoutes = () => {
           <Route path='/scan' element={<Scanner />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/items' element={<Item />} />
+          <Route path='/edit-item/:name' element={<Update />} />
           <Route path='/result/:name' element={<Home />} />
         </Route>
       </Route>
