@@ -8,7 +8,7 @@ import { Scanner } from '../../pages/scanner/Scanner.jsx'
 import { Layout } from '../Layout.jsx'
 import { Item } from '../../pages/item/Item.jsx'
 import { PrivateRoute } from './PrivateRoute'
-import {Update} from "../../pages/item/UpdateItem";
+import {Update} from "../../pages/item/update";
 
 export const AuthRoutes = () => {
   return (
