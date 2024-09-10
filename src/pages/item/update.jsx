@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useAuthStore} from "../../store/auth";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import toast from "react-hot-toast";
-import Cookies from 'js-cookie';
+import {Loader} from "../../UI/loader/Loader";
 
 
 export const Update = () => {
@@ -62,7 +62,7 @@ export const Update = () => {
         };
 
         fetchData();
-    }, [params.name, token]);  // Abhängigkeiten in useEffect
+    }, [params.name, token]);  // Dependencies for useEffect
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -89,19 +89,24 @@ export const Update = () => {
                 headers: {
                     'Accept': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'X-CSRFToken': Cookies.get('csrftoken'),
                     Authorization: `Bearer ${token}`,
                 },
             });
 
             if (!res.ok) throw new Error();
-
-            const data = await res.json();
             toast.success('Artikel erfolgreich aktualisiert!');
         } catch (e) {
             toast.error('Fehler beim Aktualisieren des Artikels!');
         }
+
     };
+
+    if (isLoading)
+        return (
+            <div className='d-flex gap-4 pt-5 justify-content-center'>
+                <Loader/>
+            </div>
+        )
 
     return (
         <Container>
