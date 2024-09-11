@@ -126,7 +126,7 @@ export const ItemUpdate = () => {
                         <div className="mb-3">
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/png, image/jpeg"
                                 name='image'
                                 className="form-control"
                                 onChange={(e) => setValue({...value, image: e.target.files[0]})}
