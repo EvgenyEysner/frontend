@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import {Loader} from "../../UI/loader/Loader";
 
 
-export const Update = () => {
+export const ItemUpdate = () => {
     const params = useParams();
     const [isLoading, setLoading] = useState(true);
     const [value, setValue] = useState({
