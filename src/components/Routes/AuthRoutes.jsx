@@ -9,6 +9,7 @@ import { Layout } from '../Layout.jsx'
 import { Item } from '../../pages/item/Item.jsx'
 import { PrivateRoute } from './PrivateRoute'
 import {ItemUpdate} from "../../pages/item/ItemUpdate";
+import {ReturnLayout} from "../ReturnLayout";
 
 export const AuthRoutes = () => {
   return (
@@ -24,6 +25,12 @@ export const AuthRoutes = () => {
           <Route path='/result/:name' element={<Home />} />
         </Route>
       </Route>
+        <Route path='/return-request' element={<ReturnLayout/>}>
+            <Route path='/return-request/scan' element={<Scanner />} />
+            <Route path='/return-request' element={<Main/>}/>
+            <Route path='/return-request/result/:name' element={<Home />} />
+            <Route path='/return-request/cart' element={<Cart />} />
+        </Route>
     </Routes>
   )
 }

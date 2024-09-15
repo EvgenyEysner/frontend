@@ -60,6 +60,14 @@ export const SideBar = () => {
             >
               <FaCartShopping size={24} /> Korb
             </Link>
+            <Link
+                onClick={handleClose}
+                to={'/return-request'}
+                className='d-flex gap-2 align-items-center text-decoration-none'
+                style={{ color: '#2b3035' }}
+            >
+              <FaCartShopping size={24} /> Rückgabe
+            </Link>
             <button
               className='d-flex gap-2 align-items-center text-decoration-none p-0'
               style={{ color: '#2b3035', background: 'none', outline: 'none', border: 'none' }}
