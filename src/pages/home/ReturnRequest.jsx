@@ -1,9 +1,9 @@
-import { ShoppingCart } from '@mui/icons-material'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import Item from '../../components/Item/Item'
-import { useCartStore } from '../../store/cart'
-import { Loader } from '../../UI/loader/Loader'
+import {ShoppingCart} from '@mui/icons-material'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {useNavigate, useParams} from 'react-router'
+import {Item} from '../../components/Item/Item'
+import {useCartStore} from '../../store/cart'
+import {Loader} from '../../UI/loader/Loader'
 import styles from './home.module.css'
 import {useAuthStore} from "../../store/auth";
 
@@ -82,24 +82,21 @@ export const ReturnRequest = () => {
     )
 
   return (
-    <div className={styles.home}>
-      <div className={styles.home__container}>
-        <div className={styles.home__row}>
-          <Item
-            id={data.id}
-            name={data.name}
-            description={data.description}
-            ean={data.ean}
-            stock={data.stock}
-            onStock={data.on_stock}
-            image={data.image}
-          />
-        </div>
-      </div>
+    <>
+      <Item
+        id={data.id}
+        name={data.name}
+        description={data.description}
+        ean={data.ean}
+        stock={data.stock}
+        onStock={data.on_stock}
+        category={data.category}
+        image={data.image}
+      />
       <div className={styles.shopping__cart} onClick={() => navigate('/return-request/cart')}>
         <ShoppingCart id='cartIcon' style={{ width: '28px', height: '28px', color: 'white' }} />
         {getTotalQuantity !== 0 && <p>{getTotalQuantity > 99 ? '99+' : getTotalQuantity}</p>}
       </div>
-    </div>
+    </>
   )
 }

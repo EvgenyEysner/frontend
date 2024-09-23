@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useAuthStore} from "../../store/auth";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import toast from "react-hot-toast";
 import {Loader} from "../../UI/loader/Loader";
+import {Grid, TextField} from "@mui/material";
+import Button from "@mui/material/Button";
 
 
 export const ItemUpdate = () => {
@@ -109,106 +108,88 @@ export const ItemUpdate = () => {
         )
 
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <form className="mt-5" key={value.id} onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='id'
-                                value={value.id}
-                                hidden={true}
-                                className="form-control"
-                                readOnly={true}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="file"
-                                accept="image/png, image/jpeg"
-                                name='image'
-                                className="form-control"
-                                onChange={(e) => setValue({...value, image: e.target.files[0]})}
-                                required={false}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='name'
-                                value={value.name}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, name: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='unit'
-                                value={value.unit}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, unit: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='category'
-                                value={value.category}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, category: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='description'
-                                value={value.description}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, description: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='ean'
-                                value={value.ean}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, ean: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='stock'
-                                value={value.stock}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, stock: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='on_stock'
-                                value={value.on_stock}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, on_stock: e.target.value})}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <input
-                                type="text"
-                                name='favorite'
-                                value={value.favorite}
-                                className="form-control"
-                                onChange={(e) => setValue({...value, favorite: e.target.value})}
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-primary">Speichern</button>
+        <div className='container mx-auto mt-5'>
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <form onSubmit={handleSubmit} className='space-y-4'>
+                        <TextField
+                            hidden
+                            label="ID"
+                            name="id"
+                            value={value.id}
+                            disabled
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Bild"
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            name="image"
+                            onChange={(e) => setValue({ ...value, image: e.target.files[0] })}
+                            InputProps={{ disableUnderline: true }}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Name"
+                            name="name"
+                            value={value.name}
+                            onChange={(e) => setValue({ ...value, name: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Maßeinheit"
+                            name="unit"
+                            value={value.unit}
+                            onChange={(e) => setValue({ ...value, unit: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Kategorie"
+                            name="category"
+                            value={value.category}
+                            onChange={(e) => setValue({ ...value, category: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Beschreibung"
+                            name="description"
+                            multiline
+                            rows={4}
+                            value={value.description}
+                            onChange={(e) => setValue({ ...value, description: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="EAN"
+                            name="ean"
+                            value={value.ean}
+                            onChange={(e) => setValue({ ...value, ean: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            label="Lager"
+                            name="stock"
+                            value={value.stock} onChange={(e) => setValue({ ...value, stock: e.target.value })}
+                            className="form-control"
+                        />
+                        <TextField
+                            value={value.on_stock} onChange={(e) => setValue({ ...value, on_stock: e.target.value })}
+                            name="on_stock"
+                            label="Verfügbar"
+                            className="form-control"
+                        />
+                        <TextField
+                            value={value.favorite} onChange={(e) => setValue({ ...value, favorite: e.target.value })}
+                            label="Favorit"
+                            name="favorite"
+                            className="form-control"
+                        />
+                        <Button type="submit" variant="contained" color="inherit">
+                            Speichern
+                        </Button>
                     </form>
-                </Col>
-            </Row>
-        </Container>
+                </Grid>
+            </Grid>
+        </div>
     );
 };

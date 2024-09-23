@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Loader } from '../../UI/loader/Loader'
-import { useAuthStore } from '../../store/auth'
-import Card from 'react-bootstrap/Card'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
-import {Link} from "react-router-dom";
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {Loader} from '../../UI/loader/Loader'
+import {useAuthStore} from '../../store/auth'
+import EditIcon from '@mui/icons-material/Edit'
+import {Link, Navigate} from 'react-router-dom'
+import {Card, CardActions, CardContent, CardMedia, Grid, Typography} from '@mui/material'
 
 export const Item = () => {
   const [data, setData] = useState([])
@@ -15,6 +14,7 @@ export const Item = () => {
   const [hasMore, setHasMore] = useState(true) // Specifies whether further articles can be loaded
   const observer = useRef() // Reference for the Intersection Observer
   const token = useAuthStore.getState().access
+  const { isAuth } = useAuthStore()
 
   const lastItemRef = useCallback(
     (node) => {
@@ -64,7 +64,7 @@ export const Item = () => {
   }, [page, token])
 
   // Get current user
-  useEffect( () => {
+  useEffect(() => {
     const fetchUserMe = async () => {
       setLoading(true)
       try {
@@ -83,7 +83,6 @@ export const Item = () => {
         }
         const data = await response.json()
         setUser(data)
-
       } catch (error) {
         console.error('Error fetching data: ', error)
         setError(error)
@@ -100,66 +99,80 @@ export const Item = () => {
       </div>
     )
 
-  if (error.length !== 0 || !data) return <>"Etwas ist schief gelaufen!"</>
+  if (!isAuth) return <Navigate to='/' />
 
   return (
-    <div>
+    <>
       {data.map((item, index) => {
         if (item.length === index + 1) {
           return (
-            <Row xs={1} md={2} className='g-4 mt-3 mb-3 justify-content-around'>
-              <Col ref={lastItemRef} key={item.id}>
-                <Card>
-                  <Card.Img variant='top' src={item.image} />
-                  <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Subtitle className='mb-2 text-muted'>
+            <Grid spacing={2} justifyContent='center'>
+              <Grid item xs={12} md={6} mt={3}>
+                <Card key={item.id} ref={lastItemRef}>
+                  <CardMedia component='img' height='140' image={item.image} alt={item.name} />
+                  <CardContent>
+                    <Typography variant='h5' component='div'>
+                      {item.name}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
                       Kategorie: {item.category}
-                    </Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
                       Verfügbar: {item.on_stock}
-                    </Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>Einheit: {item.unit}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>EAN: {item.ean}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>Lager: {item.stock}</Card.Subtitle>
-                  </Card.Body>
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      Einheit: {item.unit}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      EAN: {item.ean}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      Lager: {item.stock}
+                    </Typography>
+                  </CardContent>
                 </Card>
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
           )
         } else {
           return (
-            <Row xs={1} md={2} className='g-4 mt-3 mb-3 justify-content-around'>
-              <Col ref={lastItemRef} key={item.id}>
+            <Grid spacing={2} justifyContent='center' ref={lastItemRef} key={item.id} >
+              <Grid item xs={12} md={6} mt={3}>
                 <Card>
-                  <Card.Img variant='top' src={item.image} />
-                  <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Subtitle className='mb-2 text-muted'>
+                  <CardMedia component='img' height='140' image={item.image} alt={item.name} />
+                  <CardContent>
+                    <Typography variant='h5' component='div'>
+                      {item.name}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
                       Kategorie: {item.category}
-                    </Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
                       Verfügbar: {item.on_stock}
-                    </Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>Einheit: {item.unit}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>EAN: {item.ean}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>Lager: {item.stock}</Card.Subtitle>
-                    <Link
-                        to={`/edit-item/${item.ean}`}
-                        className='d-flex gap-2 align-items-center text-decoration-none'
-                        style={{ color: '#2b3035' }}
-                    >
-                      {user.perms === 4 ? <b>Bearbeiten</b> : ''}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      Einheit: {item.unit}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      EAN: {item.ean}
+                    </Typography>
+                    <Typography variant='subtitle1' color='text.secondary'>
+                      Lager: {item.stock}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Link to={`/edit-item/${item.ean}`} style={{ textDecoration: 'none' }}>
+                      {user.perms === 4 ? <EditIcon color='action' fontSize='large' /> : null}
                     </Link>
-                  </Card.Body>
+                  </CardActions>
                 </Card>
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
           )
         }
-      })})
-      {isLoading && <p>Loading...</p>}
+      })}
+      ){isLoading && <p>Loading...</p>}
       {!hasMore && <p>Keine weiteren Artikel</p>}
-    </div>
+    </>
   )
 }

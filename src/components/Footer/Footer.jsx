@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 export const Footer = () => {
-  return (
-    <footer data-bs-theme='dark' className='bg-body-tertiary text-center text-lg-start'>
-      <div className='text-center p-3 d-flex flex-column gap-2'>
-        <p className='text-white'>&copy; {new Date().getFullYear()} All rights reserved</p>
-        <a className='text-body text-white text-decoration-none' href='https://softeis.net/'>
-          SoftEis
-        </a>
-      </div>
-    </footer>
-  )
+    return (
+        <footer className="bg-gray-800 text-white py-4">
+            <div className="container mx-auto text-center">
+                <p>
+                    &copy; {new Date().getFullYear()} | <a className='text-white text-decoration-none'
+                       href='https://softeis.net/'>SoftEis</a> | Alle Rechte vorbehalten.
+                </p>
+            </div>
+        </footer>
+    );
 }

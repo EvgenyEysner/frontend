@@ -18,7 +18,7 @@ function CartItem({
 
   return (
     <div className={styles.cartItem}>
-      <img className={styles.cartItem__image} src={image} alt='item' />
+      <img className={styles.cartItem__image} src={image} alt={name} />
       <div className={styles.cartItem__info}>
         <p className={styles.cartItem__title}>{name}</p>
         <p className={styles.cartItem__price}>{unit}</p>
@@ -26,7 +26,7 @@ function CartItem({
         <p className={styles.cartItem__price}>{ean}</p>
         <p className={styles.cartItem__price}>{stock}</p>
         {quantity > onStock ? (
-          <p className={styles.onStockError}>На складе сейчас доступно {onStock} товар(ов)</p>
+          <p className={styles.onStockError}>Momentan verfügbar {onStock} Artikeln</p>
         ) : (
           <div style={{ minHeight: '15px', marginTop: '12px' }} />
         )}

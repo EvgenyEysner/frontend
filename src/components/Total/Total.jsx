@@ -16,7 +16,7 @@ function Total() {
   return (
     <div className={styles.total}>
       <h2>Gesamt Auftrag</h2>
-      <p className={styles.total__p}>Artikeln gesamt ({totalItems} items)</p>
+      <p className={styles.total__p}>Artikeln gesamt ({totalItems})</p>
     </div>
   )
 }

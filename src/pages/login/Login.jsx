@@ -1,12 +1,15 @@
-import { useState } from 'react'
-import { toast } from 'react-hot-toast'
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { loginRequest } from '../../api/api'
-import { useAuthStore } from '../../store/auth'
+import {useState} from 'react'
+import {toast} from 'react-hot-toast'
+import {FaRegEye, FaRegEyeSlash} from 'react-icons/fa6'
+import {Navigate, useNavigate} from 'react-router-dom'
+import {loginRequest} from '../../api/api'
+import {useAuthStore} from '../../store/auth'
 
-import { Loader } from '../../UI/loader/Loader'
+import {Loader} from '../../UI/loader/Loader'
 import styles from './login.module.css'
+import {TextField, Typography} from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 
 export const Login = () => {
   const navigate = useNavigate()
@@ -44,60 +47,69 @@ export const Login = () => {
   if (isAuth) return <Navigate to='/' />
 
   return (
-    <form className={styles.wrapper + ' container'} onSubmit={handleSubmit}>
-      <h3 className='mb-3 fs-4 fw-semibold'>Einloggen</h3>
-      <div className='mb-3 d-flex gap-1 flex-column'>
-        <label>E-mail</label>
-        <input
-          className='form-control'
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type='email'
-          name='email'
-          id='email'
-          placeholder='name@company.com'
-          required
-        />
-      </div>
-      <div className='mb-3 d-flex gap-1 flex-column'>
-        <label htmlFor='password'>Password</label>
-        <div className='position-relative'>
-          <input
-            value={password}
-            type={isVisiblePassword ? 'text' : 'password'}
-            className='form-control pe-5'
-            placeholder='**********'
-            name='password'
-            id='password'
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {isVisiblePassword ? (
-            <FaRegEyeSlash
-              onClick={() => setVisiblePassword(false)}
-              className='position-absolute top-50 end-0 me-3 translate-middle-y'
-              role='button'
-            />
-          ) : (
-            <FaRegEye
-              onClick={() => setVisiblePassword(true)}
-              className='position-absolute top-50 end-0 me-3 translate-middle-y'
-              role='button'
-            />
-          )}
-        </div>
-      </div>
-      <div className='d-grid'>
-        <button disabled={!password || !email} type='submit' className='btn btn-primary'>
-          Login
-        </button>
-      </div>
-      <p className='forgot-password text-right text-black small mt-1' style={{ opacity: '0.6' }}>
-        Forgot{' '}
-        <a href='#' style={{ color: 'inherit', textDecoration: 'none' }}>
-          password?
-        </a>
-      </p>
+    <form className='container mx-auto mt-10' onSubmit={handleSubmit}>
+      <Typography variant='h6' className='mb-3 text-center'>
+        Anmelden
+      </Typography>
+      <TextField
+        label='E-mail'
+        variant='outlined'
+        margin='normal'
+        fullWidth
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        type='email'
+        id='email'
+        name='email'
+        placeholder='name@company.com'
+        required
+        className='mb-3'
+      />
+
+      <TextField
+        label='Password'
+        variant='outlined'
+        margin='normal'
+        fullWidth
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        type={isVisiblePassword ? 'text' : 'password'}
+        id='password'
+        name='password'
+        placeholder='**********'
+        required
+        className='mb-3'
+        InputProps={{
+          endAdornment: (
+            <IconButton edge='end' aria-label='toggle password visibility'>
+              {isVisiblePassword ? (
+                <FaRegEyeSlash
+                  onClick={() => setVisiblePassword(false)}
+                  className='position-absolute top-50 end-0 me-3 translate-middle-y'
+                  role='button'
+                />
+              ) : (
+                <FaRegEye
+                  onClick={() => setVisiblePassword(true)}
+                  className='position-absolute top-50 end-0 me-3 translate-middle-y'
+                  role='button'
+                />
+              )}
+            </IconButton>
+          ),
+        }}
+      />
+
+      <Button
+        disabled={!email || !password}
+        variant='contained'
+        color='primary'
+        fullWidth
+        className='mb-3'
+        type='submit'
+      >
+        Login
+      </Button>
     </form>
   )
 }
