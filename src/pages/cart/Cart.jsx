@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Button from 'react-bootstrap/Button'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router'
 import CartItem from '../../components/CartItem/CartItem'
 import Total from '../../components/Total/Total'
 import { useAuthStore } from '../../store/auth'
 import { useCartStore } from '../../store/cart'
-import styles from './cart.module.css'
+import { Button, TextField } from '@mui/material';
 
 function Cart() {
   const { isAuth } = useAuthStore()
@@ -79,10 +78,10 @@ function Cart() {
   }
 
   return (
-    <div className={styles.cart}>
-      <div className={styles.cart__left}>
+    <div className="flex flex-col md:flex-row">
+      <div className="w-full md:w-3/4 p-4">
         <div>
-          <h3>Auftrag</h3>
+          <h3 className="text-xl font-semibold mb-4">Auftrag</h3>
           {cart?.map((item) => (
             <CartItem
               key={item.id}
@@ -98,32 +97,39 @@ function Cart() {
             />
           ))}
         </div>
-        <div className='d-flex flex-column form-outline mt-2' id='text'>
-          <label className='form-label' htmlFor='text'>
+        <div className="flex flex-col mt-4" id="text">
+          <label className="mb-2 font-medium" htmlFor="text">
             Notiz
           </label>
-          <textarea
-            className='form-control'
+          <TextField
+            id="text"
+            label="Notiz"
+            multiline
             rows={8}
+            variant="outlined"
             onChange={(event) => setNote(event.target.value)}
             value={note}
-          ></textarea>
+            fullWidth
+            disabled={isDisabled}
+          />
         </div>
         <Button
-          disabled={isDisabled}
+          variant="contained"
+          color="inherit"
+          size="small"
           onClick={handleClick}
-          variant='secondary'
-          size='sm'
-          className='mt-3'
+          className="mt-4"
+          disabled={isDisabled}
         >
           Abschließen
         </Button>
       </div>
-      <div className='cart__right'>
-        <Total />
+      <div className="w-full md:w-1/4 p-4">
+        <Total/>
       </div>
     </div>
-  )
+
+)
 }
 
 export default Cart

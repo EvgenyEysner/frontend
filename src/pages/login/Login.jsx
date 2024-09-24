@@ -13,14 +13,13 @@ import Button from '@mui/material/Button'
 
 export const Login = () => {
   const navigate = useNavigate()
-  const { isAuth, setToken } = useAuthStore()
+  const {isAuth, setToken} = useAuthStore()
   const [isVisiblePassword, setVisiblePassword] = useState(false)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  console.log(error)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -40,11 +39,11 @@ export const Login = () => {
 
   if (loading)
     return (
-      <div className={styles.wrapper} style={{ alignItems: 'center' }}>
-        <Loader />
+      <div className={styles.wrapper} style={{alignItems: 'center'}}>
+        <Loader/>
       </div>
     )
-  if (isAuth) return <Navigate to='/' />
+  if (isAuth) return <Navigate to='/'/>
 
   return (
     <form className='container mx-auto mt-10' onSubmit={handleSubmit}>
