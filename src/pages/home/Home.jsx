@@ -1,9 +1,9 @@
-import { ShoppingCart } from '@mui/icons-material'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import {ShoppingCart} from '@mui/icons-material'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {useNavigate, useParams} from 'react-router'
 import {Item} from '../../components/Item/Item'
-import { useCartStore } from '../../store/cart'
-import { Loader } from '../../UI/loader/Loader'
+import {useCartStore} from '../../store/cart'
+import {Loader} from '../../UI/loader/Loader'
 import styles from './home.module.css'
 import {useAuthStore} from "../../store/auth";
 
@@ -16,7 +16,7 @@ export const Home = () => {
   const params = useParams()
   const token = useAuthStore.getState().access
 
-  const { cart } = useCartStore()
+  const {cart} = useCartStore()
   const getTotalQuantity = useMemo(() => {
     let total = 0
     cart.forEach((item) => {
@@ -30,14 +30,14 @@ export const Home = () => {
       setLoading(true)
       try {
         const res = await fetch(`/api/v1/item/${params.name}`, {
-            method: 'GET',
-            mode: 'cors',
-            body: JSON.stringify(),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                Authorization: `Bearer ${token}`,
-            },
+          method: 'GET',
+          mode: 'cors',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${token}`,
+          },
         })
 
         if (!res.ok) throw new Error()
@@ -57,7 +57,7 @@ export const Home = () => {
   if (isLoading)
     return (
       <div className='d-flex gap-4 pt-5 justify-content-center'>
-        <Loader />
+        <Loader/>
       </div>
     )
 
@@ -82,18 +82,18 @@ export const Home = () => {
 
   return (
     <>
-          <Item
-            id={data.id}
-            name={data.name}
-            description={data.description}
-            ean={data.ean}
-            stock={data.stock}
-            onStock={data.on_stock}
-            category={data.category}
-            image={data.image}
-          />
+      <Item
+        id={data.id}
+        name={data.name}
+        description={data.description}
+        ean={data.ean}
+        stock={data.stock}
+        onStock={data.on_stock}
+        category={data.category}
+        image={data.image}
+      />
       <div className={styles.shopping__cart} onClick={() => navigate('/cart')}>
-        <ShoppingCart id='cartIcon' style={{ width: '28px', height: '28px', color: 'white' }} />
+        <ShoppingCart id='cartIcon' style={{width: '28px', height: '28px', color: 'white'}}/>
         {getTotalQuantity !== 0 && <p>{getTotalQuantity > 99 ? '99+' : getTotalQuantity}</p>}
       </div>
     </>
