@@ -20,77 +20,85 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useLogout from "../../hooks/useLogout";
 
 export const SideBar = () => {
-    const [open, setOpen] = useState(false);
-    const logout = useLogout()
+  const [open, setOpen] = useState(false);
+  const logout = useLogout()
 
-    const toggleDrawer = (newOpen) => () => {
-        setOpen(newOpen);
-    };
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
 
-    const DrawerList = (
-        <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
-            <Divider/>
-            <List>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/'>
-                        <ListItemIcon>
-                            <HomeIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Home'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/scan'>
-                        <ListItemIcon>
-                            <DocumentScannerIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Scanner'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/items'>
-                        <ListItemIcon>
-                            <InventoryIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Bestand'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/cart'>
-                        <ListItemIcon>
-                            <ShoppingCartCheckoutIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Korb'/>
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            <Divider/>
-            <List>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} to='/return-request'>
-                        <ListItemIcon>
-                            <KeyboardReturnIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Rückgabe'/>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={logout}>
-                        <ListItemIcon>
-                            <LogoutIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary='Logout'/>
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Box>
-    );
-    return (
-        <div>
-            <Button onClick={toggleDrawer(true)}><MenuIcon sx={{ fontSize: 40, color: 'white'}}/></Button>
-            <Drawer open={open} onClose={toggleDrawer(false)}>
-                {DrawerList}
-            </Drawer>
-        </div>
-    );
+  const DrawerList = (
+    <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
+      <Divider/>
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/'>
+            <ListItemIcon>
+              <HomeIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Home'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/scan'>
+            <ListItemIcon>
+              <DocumentScannerIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Scanner'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/items'>
+            <ListItemIcon>
+              <InventoryIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Bestand'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/cart'>
+            <ListItemIcon>
+              <ShoppingCartCheckoutIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Korb'/>
+          </ListItemButton>
+        </ListItem>
+      </List>
+      <Divider/>
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/return-request'>
+            <ListItemIcon>
+              <KeyboardReturnIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Rückgabe'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/return-request/cart-return'>
+            <ListItemIcon>
+              <ShoppingCartCheckoutIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Retouren'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={logout}>
+            <ListItemIcon>
+              <LogoutIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Logout'/>
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
+  return (
+    <div>
+      <Button onClick={toggleDrawer(true)}><MenuIcon sx={{fontSize: 40, color: 'white'}}/></Button>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+    </div>
+  );
 }

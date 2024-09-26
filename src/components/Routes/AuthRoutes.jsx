@@ -17,19 +17,19 @@ import CartReturn from "../../pages/cart/CartReturn";
 export const AuthRoutes = () => {
   return (
     <Routes>
-      <Route path='/login' element={<Login />} />
-      <Route path='/' element={<Layout />}>
-        <Route element={<PrivateRoute />}>
-          <Route path='/' element={<Main />} />
-          <Route path='/scan' element={<Scanner />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/items' element={<Item />} />
-          <Route path='/edit-item/:name' element={<ItemUpdate />} />
-          <Route path='/result/:name' element={<Home />} />
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/' element={<Layout/>}>
+        <Route element={<PrivateRoute/>}>
+          <Route path='/' element={<Main/>}/>
+          <Route path='/scan' element={<Scanner/>}/>
+          <Route path='/cart' element={<Cart/>}/>
+          <Route path='/items' element={<Item/>}/>
+          <Route path='/edit-item/:name' element={<ItemUpdate/>}/>
+          <Route path='/result/:name' element={<Home/>}/>
           <Route path='/return-request' element={<Return/>}/>
           <Route path='/return-request/scan' element={<ReturnScanner/>}/>
-          <Route path='/return-request/result/:name' element={<ReturnRequest />} />
-          <Route path='/return-request/cart' element={<CartReturn />} />
+          <Route path='/return-request/result/:name' element={<ReturnRequest/>}/>
+          <Route path='/return-request/cart-return' element={<CartReturn/>}/>
         </Route>
       </Route>
     </Routes>

@@ -93,7 +93,7 @@ export const ReturnRequest = () => {
         category={data.category}
         image={data.image}
       />
-      <div className={styles.shopping__cart} onClick={() => navigate('/return-request/cart')}>
+      <div className={styles.shopping__cart} onClick={() => navigate('/return-request/cart-return')}>
         <ShoppingCart id='cartIcon' style={{ width: '28px', height: '28px', color: 'white' }} />
         {getTotalQuantity !== 0 && <p>{getTotalQuantity > 99 ? '99+' : getTotalQuantity}</p>}
       </div>
