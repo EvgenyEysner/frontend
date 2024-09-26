@@ -1,49 +1,61 @@
-import {useState} from 'react'
-import {toast} from 'react-hot-toast'
-import {FaRegEye, FaRegEyeSlash} from 'react-icons/fa6'
-import {Navigate, useNavigate} from 'react-router-dom'
-import {loginRequest} from '../../api/api'
-import {useAuthStore} from '../../store/auth'
+import {useState} from 'react';
+import {toast} from 'react-hot-toast';
+import {FaRegEye, FaRegEyeSlash} from 'react-icons/fa6';
+import {Navigate, useNavigate} from 'react-router-dom';
+import {loginRequest} from '../../api/api';
+import {useAuthStore} from '../../store/auth';
 
-import {Loader} from '../../UI/loader/Loader'
-import styles from './login.module.css'
-import {TextField, Typography} from '@mui/material'
-import IconButton from '@mui/material/IconButton'
-import Button from '@mui/material/Button'
+import {Loader} from '../../UI/loader/Loader';
+import styles from './login.module.css';
+import {TextField, Typography} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 
 export const Login = () => {
-  const navigate = useNavigate()
-  const {isAuth, setToken} = useAuthStore()
-  const [isVisiblePassword, setVisiblePassword] = useState(false)
+  const navigate = useNavigate();
+  const {isAuth, setToken} = useAuthStore();
+  const [isVisiblePassword, setVisiblePassword] = useState(false);
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    setLoading(true)
-    setError(null)
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
     try {
-      const response = await loginRequest(email, password)
-      setToken(response.access, response.refresh)
-      toast.success('Login successful!')
-      navigate('/')
-    } catch (error) {
-      setError(error.response?.message || 'Login failed, please try again.')
-      toast.error('There was an error, please try again.')
-      setLoading(false)
-    }
-  }
+      const response = await loginRequest(email, password);
 
+      // Überprüfen, ob Zugriffstoken und Aktualisierungstoken vorhanden sind
+      if (response.access && response.refresh) {
+        setToken(response.access, response.refresh);
+        toast.success('Login successful!');
+        navigate('/');
+      } else {
+        throw new Error('Invalid response format');
+      }
+    } catch (error) {
+      // Verbessere die Fehlernachricht, um sicherzustellen, dass immer eine Nachricht vorhanden ist
+      const errorMessage = error.response?.data?.message || error.message || 'Login failed, please try again.';
+      setError(errorMessage);
+      toast.error('There was an error, please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Anzeigen des Loaders bei einer Anmeldungsanforderung
   if (loading)
     return (
       <div className={styles.wrapper} style={{alignItems: 'center'}}>
         <Loader/>
       </div>
-    )
-  if (isAuth) return <Navigate to='/'/>
+    );
+
+  // Wenn der Benutzer bereits authentifiziert ist, wird er zur Startseite weitergeleitet
+  if (isAuth) return <Navigate to='/'/>;
 
   return (
     <form className='container mx-auto mt-10' onSubmit={handleSubmit}>
@@ -80,19 +92,15 @@ export const Login = () => {
         className='mb-3'
         InputProps={{
           endAdornment: (
-            <IconButton edge='end' aria-label='toggle password visibility'>
+            <IconButton
+              edge='end'
+              aria-label='toggle password visibility'
+              onClick={() => setVisiblePassword(!isVisiblePassword)} // Direktes Binding
+            >
               {isVisiblePassword ? (
-                <FaRegEyeSlash
-                  onClick={() => setVisiblePassword(false)}
-                  className='position-absolute top-50 end-0 me-3 translate-middle-y'
-                  role='button'
-                />
+                <FaRegEyeSlash className='position-absolute top-50 end-0 me-3 translate-middle-y'/>
               ) : (
-                <FaRegEye
-                  onClick={() => setVisiblePassword(true)}
-                  className='position-absolute top-50 end-0 me-3 translate-middle-y'
-                  role='button'
-                />
+                <FaRegEye className='position-absolute top-50 end-0 me-3 translate-middle-y'/>
               )}
             </IconButton>
           ),
@@ -100,7 +108,7 @@ export const Login = () => {
       />
 
       <Button
-        disabled={!email || !password}
+        disabled={!email || !password || loading} // Verhindere mehrere Anfragen während des Ladens
         variant='contained'
         color='primary'
         fullWidth
@@ -109,6 +117,11 @@ export const Login = () => {
       >
         Login
       </Button>
+      {error && (
+        <Typography color='error' className='text-center'>
+          {error}
+        </Typography>
+      )}
     </form>
-  )
-}
+  );
+};

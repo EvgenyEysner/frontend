@@ -1,10 +1,10 @@
-import {create} from "zustand"
-import {persist} from "zustand/middleware"
-import {jwtDecode} from 'jwt-decode'
+import create from "zustand";
+import {persist} from "zustand/middleware";
+import {jwtDecode} from 'jwt-decode'; // Korrigierter Import
 
 export const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       access: '',
       refresh: '',
       isAuth: false,
@@ -19,13 +19,13 @@ export const useAuthStore = create(
         localStorage.removeItem('auth');
       },
       isTokenValid: () => {
-        const {access} = useAuthStore.getState();
+        const {access} = get(); // Verwende get(), um den aktuellen Zustand zu erhalten
         if (!access) return false;
 
         try {
           const decoded = jwtDecode(access);
-          const currentTime = Date.now() / 1000; // Time in seconds
-          return decoded.exp > currentTime; // Compare the expiration date with the current time
+          const currentTime = Date.now() / 1000; // Zeit in Sekunden
+          return decoded.exp > currentTime; // Vergleiche das Ablaufdatum mit der aktuellen Zeit
         } catch (error) {
           return false;
         }
