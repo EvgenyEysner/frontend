@@ -10,6 +10,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -77,7 +78,7 @@ export const SideBar = () => {
         <ListItem disablePadding>
           <ListItemButton component={Link} to='/return-request/cart-return'>
             <ListItemIcon>
-              <ShoppingCartCheckoutIcon/>
+              <AssignmentReturnIcon/>
             </ListItemIcon>
             <ListItemText primary='Retouren'/>
           </ListItemButton>
