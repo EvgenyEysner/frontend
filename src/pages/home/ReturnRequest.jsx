@@ -1,11 +1,11 @@
 import {ShoppingCart} from '@mui/icons-material'
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useNavigate, useParams} from 'react-router'
-import {Item} from '../../components/Item/Item'
-import {useCartStore} from '../../store/cart'
 import {Loader} from '../../UI/loader/Loader'
 import styles from './home.module.css'
 import {useAuthStore} from "../../store/auth";
+import {useReturnStore} from "../../store/return";
+import {ItemReturn} from "../../components/Item/ItemReturn";
 
 export const ReturnRequest = () => {
   const navigate = useNavigate()
@@ -16,15 +16,15 @@ export const ReturnRequest = () => {
   const params = useParams()
   const token = useAuthStore.getState().access
 
-  const { cart } = useCartStore()
+  const { returns } = useReturnStore()
 
   const getTotalQuantity = useMemo(() => {
     let total = 0
-    cart.forEach((item) => {
+    returns.forEach((item) => {
       total += item.quantity
     })
     return total
-  }, [cart])
+  }, [returns])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +83,7 @@ export const ReturnRequest = () => {
 
   return (
     <>
-      <Item
+      <ItemReturn
         id={data.id}
         name={data.name}
         description={data.description}
