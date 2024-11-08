@@ -5,6 +5,23 @@
   border-radius: 60px;
   overflow: hidden;
 }
+/* Effekt bei erfolgreichem Scannen */
+.scanner-success {
+  border-color: green;
+  animation: pulse 0.5s infinite; /* Pulsierende Animation */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 @media screen and (max-width: 992px) {
   .scanner {
