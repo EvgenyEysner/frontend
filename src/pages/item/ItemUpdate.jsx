@@ -95,10 +95,10 @@ export const ItemUpdate = () => {
 
       if (!res.ok) throw new Error();
       toast.success('Artikel erfolgreich aktualisiert!');
+      navigate('/items')
     } catch (e) {
       toast.error('Fehler beim Aktualisieren des Artikels!');
     }
-
   };
 
   if (isLoading)
@@ -122,12 +122,10 @@ export const ItemUpdate = () => {
               className="form-control"
             />
             <TextField
-              label="Bild"
               type="file"
               accept="image/png, image/jpeg"
               name="image"
               onChange={(e) => setValue({...value, image: e.target.files[0]})}
-              InputProps={{disableUnderline: true}}
               className="form-control"
             />
             <TextField

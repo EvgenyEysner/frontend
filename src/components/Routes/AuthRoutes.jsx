@@ -13,6 +13,7 @@ import {Return} from "../../pages/main/Return";
 import {ReturnScanner} from "../../pages/scanner/ReturnScanner";
 import {ReturnRequest} from "../../pages/home/ReturnRequest";
 import CartReturn from "../../pages/cart/CartReturn";
+import {AddItem} from "../../pages/item/AddItem";
 
 export const AuthRoutes = () => {
   return (
@@ -24,6 +25,7 @@ export const AuthRoutes = () => {
           <Route path='/scan' element={<Scanner/>}/>
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/items' element={<Item/>}/>
+          <Route path='/add-item' element={<AddItem/>}/>
           <Route path='/edit-item/:name' element={<ItemUpdate/>}/>
           <Route path='/result/:name' element={<Home/>}/>
           <Route path='/return-request' element={<Return/>}/>

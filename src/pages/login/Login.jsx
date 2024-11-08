@@ -28,7 +28,6 @@ export const Login = () => {
     try {
       const response = await loginRequest(email, password);
 
-      // Überprüfen, ob Zugriffstoken und Aktualisierungstoken vorhanden sind
       if (response.access && response.refresh) {
         setToken(response.access, response.refresh);
         toast.success('Login successful!');
@@ -37,7 +36,6 @@ export const Login = () => {
         throw new Error('Invalid response format');
       }
     } catch (error) {
-      // Verbessere die Fehlernachricht, um sicherzustellen, dass immer eine Nachricht vorhanden ist
       const errorMessage = error.response?.data?.message || error.message || 'Login failed, please try again.';
       setError(errorMessage);
       toast.error('There was an error, please try again.');
@@ -46,15 +44,14 @@ export const Login = () => {
     }
   };
 
-  // Anzeigen des Loaders bei einer Anmeldungsanforderung
-  if (loading)
+  if (loading) {
     return (
-      <div className={styles.wrapper} style={{alignItems: 'center'}}>
+      <div className={styles.wrapper}>
         <Loader/>
       </div>
     );
+  }
 
-  // Wenn der Benutzer bereits authentifiziert ist, wird er zur Startseite weitergeleitet
   if (isAuth) return <Navigate to='/'/>;
 
   return (
@@ -62,6 +59,7 @@ export const Login = () => {
       <Typography variant='h6' className='mb-3 text-center'>
         Anmelden
       </Typography>
+
       <TextField
         label='E-mail'
         variant='outlined'
@@ -95,20 +93,16 @@ export const Login = () => {
             <IconButton
               edge='end'
               aria-label='toggle password visibility'
-              onClick={() => setVisiblePassword(!isVisiblePassword)} // Direktes Binding
+              onClick={() => setVisiblePassword(!isVisiblePassword)}
             >
-              {isVisiblePassword ? (
-                <FaRegEyeSlash className='position-absolute top-50 end-0 me-3 translate-middle-y'/>
-              ) : (
-                <FaRegEye className='position-absolute top-50 end-0 me-3 translate-middle-y'/>
-              )}
+              {isVisiblePassword ? <FaRegEyeSlash/> : <FaRegEye/>}
             </IconButton>
           ),
         }}
       />
 
       <Button
-        disabled={!email || !password || loading} // Verhindere mehrere Anfragen während des Ladens
+        disabled={!email || !password || loading}
         variant='contained'
         color='primary'
         fullWidth
@@ -117,8 +111,9 @@ export const Login = () => {
       >
         Login
       </Button>
+
       {error && (
-        <Typography color='error' className='text-center'>
+        <Typography color='error' className='text-center mt-2'>
           {error}
         </Typography>
       )}

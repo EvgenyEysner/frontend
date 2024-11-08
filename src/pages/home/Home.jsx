@@ -52,7 +52,7 @@ export const Home = () => {
     }
 
     fetchData()
-  }, [params.name])
+  }, [params.name, token])
 
   if (isLoading)
     return (

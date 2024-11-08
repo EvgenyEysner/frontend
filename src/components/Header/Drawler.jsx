@@ -17,6 +17,7 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import {Link} from "react-router-dom";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import useLogout from "../../hooks/useLogout";
 
@@ -54,6 +55,14 @@ export const SideBar = () => {
               <InventoryIcon/>
             </ListItemIcon>
             <ListItemText primary='Bestand'/>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to='/add-item'>
+            <ListItemIcon>
+              <AddIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Neu hinzufügen'/>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
