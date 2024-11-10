@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router";
 import {useAuthStore} from "../../store/auth";
 import toast from "react-hot-toast";
 import {Loader} from "../../UI/loader/Loader";
-import {Grid, TextField} from "@mui/material";
+import {Grid, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
 
@@ -23,8 +23,12 @@ export const ItemUpdate = () => {
     on_stock: '',
     favorite: '',
   });
+  const [categories, setCategories] = useState([]);
+  const [stocks, setStocks] = useState([]);
   const [error, setError] = useState('');
   const token = useAuthStore.getState().access;
+
+  console.log("REQUEST: ", value)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,8 +64,34 @@ export const ItemUpdate = () => {
         setLoading(false);
       }
     };
+    // Fetch categories and stocks for dropdowns
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/v1/category', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setCategories(data);
+      } catch (e) {
+        console.error('Fehler beim Abrufen der Kategorien');
+      }
+    };
+
+    const fetchStocks = async () => {
+      try {
+        const res = await fetch('/api/v1/stock', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setStocks(data);
+      } catch (e) {
+        console.error('Fehler beim Abrufen der Lagerbestände');
+      }
+    };
 
     fetchData();
+    fetchCategories();
+    fetchStocks();
   }, [params.name, token]);  // Dependencies for useEffect
 
   const handleSubmit = async (event) => {
@@ -142,13 +172,26 @@ export const ItemUpdate = () => {
               onChange={(e) => setValue({...value, unit: e.target.value})}
               className="form-control"
             />
-            <TextField
+            {/*<TextField*/}
+            {/*  label="Kategorie"*/}
+            {/*  name="category"*/}
+            {/*  value={value.category}*/}
+            {/*  onChange={(e) => setValue({...value, category: e.target.value})}*/}
+            {/*  className="form-control"*/}
+            {/*/>*/}
+            <Select
               label="Kategorie"
               name="category"
               value={value.category}
-              onChange={(e) => setValue({...value, category: e.target.value})}
-              className="form-control"
-            />
+              onChange={(e) => setValue({ ...value, category: e.target.value })}
+              fullWidth
+            >
+              {categories.results.map((category) => (
+                <MenuItem key={category.id} value={category.id}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
             <TextField
               label="Beschreibung"
               name="description"
@@ -165,12 +208,25 @@ export const ItemUpdate = () => {
               onChange={(e) => setValue({...value, ean: e.target.value})}
               className="form-control"
             />
-            <TextField
+            {/*<TextField*/}
+            {/*  label="Lager"*/}
+            {/*  name="stock"*/}
+            {/*  value={value.stock} onChange={(e) => setValue({...value, stock: e.target.value})}*/}
+            {/*  className="form-control"*/}
+            {/*/>*/}
+            <Select
               label="Lager"
               name="stock"
-              value={value.stock} onChange={(e) => setValue({...value, stock: e.target.value})}
-              className="form-control"
-            />
+              value={value.stock}
+              onChange={(e) => setValue({ ...value, stock: e.target.value })}
+              fullWidth
+            >
+              {stocks.results.map((stock) => (
+                <MenuItem key={stock.id} value={stock.id}>
+                  {stock.name}
+                </MenuItem>
+              ))}
+            </Select>
             <TextField
               value={value.on_stock} onChange={(e) => setValue({...value, on_stock: e.target.value})}
               name="on_stock"
