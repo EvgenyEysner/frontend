@@ -1,15 +1,42 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router";
-import {useAuthStore} from "../../store/auth";
-import toast from "react-hot-toast";
-import {Loader} from "../../UI/loader/Loader";
-import {Grid, MenuItem, Select, TextField} from "@mui/material";
-import Button from "@mui/material/Button";
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { useAuthStore } from '../../store/auth'
+import toast from 'react-hot-toast'
+import { Loader } from '../../UI/loader/Loader'
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import Button from '@mui/material/Button'
+import { fetchCategories, fetchItem, fetchStocks, updateItem } from '../../api/api'
+
+const colorOptions = [
+  { value: '1', label: 'Rot' },
+  { value: '2', label: 'Gelb' },
+  { value: '3', label: 'Grün' },
+  { value: '4', label: 'Standard' },
+]
+
+const unitOptions = [
+  { value: '1', label: 'Stück' },
+  { value: '2', label: 'Meter' },
+  { value: '3', label: 'Rolle' },
+]
+
+const Dropdown = ({ label, value, onChange, options }) => (
+  <FormControl fullWidth>
+    <InputLabel>{label}</InputLabel>
+    <Select value={value} onChange={onChange} label={label}>
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
+)
 
 export const ItemUpdate = () => {
-  const params = useParams();
+  const params = useParams()
   const navigate = useNavigate()
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true)
   const [value, setValue] = useState({
     id: '',
     image: null,
@@ -21,117 +48,66 @@ export const ItemUpdate = () => {
     stock: '',
     on_stock: '',
     favorite: '',
-  });
-  const [categories, setCategories] = useState('');
-  const [stocks, setStocks] = useState('');
-  const [error, setError] = useState('');
-  const token = useAuthStore.getState().access;
+  })
+  const [categories, setCategories] = useState([])
+  const [stocks, setStocks] = useState([])
+  const [error, setError] = useState('')
+  const token = useAuthStore.getState().access
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const loadAllData = async () => {
+      setLoading(true)
       try {
-        const res = await fetch(`/api/v1/item/${params.name}`, {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const [item, categoryData, stockData] = await Promise.all([
+          fetchItem(params.name, token),
+          fetchCategories(token),
+          fetchStocks(token),
+        ])
 
-        if (!res.ok) throw new Error();
-
-        const result = await res.json();
         setValue({
-          id: result.id,
-          category: result.category,
-          name: result.name,
-          unit: result.unit,
-          description: result.description,
-          ean: result.ean,
-          stock: result.stock,
-          on_stock: result.on_stock,
-          favorite: result.favorite,
-        });
-      } catch (e) {
-        setError('Artikel nicht gefunden');
+          id: item.id,
+          category: item.category,
+          name: item.name,
+          unit: item.unit,
+          description: item.description,
+          ean: item.ean,
+          stock: item.stock,
+          on_stock: item.on_stock,
+          favorite: item.favorite,
+        })
+        setCategories(categoryData.results || [])
+        setStocks(stockData.results || [])
+      } catch {
+        setError('Fehler beim Laden der Daten')
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch('/api/v1/category', {
-          headers: {Authorization: `Bearer ${token}`},
-        });
-        const data = await res.json();
-        setCategories(data);
-      } catch (e) {
-        console.error('Fehler beim Abrufen der Kategorien');
-      }
-    };
-
-    const fetchStocks = async () => {
-      try {
-        const res = await fetch('/api/v1/stock', {
-          headers: {Authorization: `Bearer ${token}`},
-        });
-        const data = await res.json();
-        setStocks(data);
-      } catch (e) {
-        console.error('Fehler beim Abrufen der Lagerbestände');
-      }
-    };
-
-    fetchData();
-    fetchCategories();
-    fetchStocks();
-  }, [params.name, token]);  // Dependencies for useEffect
+    loadAllData()
+  }, [params.name, token])
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    let formData = new FormData();
-    formData.append('id', value.id);
-    if (value.image) {
-      formData.append('image', value.image)
-    }
-    formData.append('category', value.category);
-    formData.append('name', value.name);
-    formData.append('unit', value.unit);
-    formData.append('description', value.description);
-    formData.append('ean', value.ean);
-    formData.append('stock', value.stock);
-    formData.append('on_stock', value.on_stock);
-    formData.append('favorite', value.favorite);
+    event.preventDefault()
+    const formData = new FormData()
+    Object.entries(value).forEach(([key, val]) => {
+      if (key !== 'image' || val) formData.append(key, val)
+    })
+    if (value.image) formData.append('image', value.image)
 
     try {
-      const res = await fetch(`/api/v1/item/${params.name}/`, {
-        method: 'PUT',
-        mode: 'cors',
-        body: formData,
-        headers: {
-          'Accept': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) throw new Error();
-      toast.success('Artikel erfolgreich aktualisiert!');
+      await updateItem(params.name, formData, token)
+      toast.success('Artikel erfolgreich aktualisiert!')
       navigate('/items')
-    } catch (e) {
-      toast.error('Fehler beim Aktualisieren des Artikels!');
+    } catch {
+      toast.error('Fehler beim Aktualisieren des Artikels!')
     }
-  };
+  }
 
   if (isLoading)
     return (
       <div className='d-flex gap-4 pt-5 justify-content-center'>
-        <Loader/>
+        <Loader />
       </div>
     )
 
@@ -141,100 +117,81 @@ export const ItemUpdate = () => {
         <Grid item xs={12}>
           <form onSubmit={handleSubmit} className='space-y-4'>
             <TextField
-              hidden
-              label="ID"
-              name="id"
-              value={value.id}
-              disabled
-              className="form-control"
-            />
-            <TextField
-              type="file"
-              accept="image/png, image/jpeg"
-              name="image"
-              onChange={(e) => setValue({...value, image: e.target.files[0]})}
-              className="form-control"
-            />
-            <TextField
-              label="Name"
-              name="name"
+              label='Name'
+              name='name'
               value={value.name}
-              onChange={(e) => setValue({...value, name: e.target.value})}
-              className="form-control"
+              onChange={(e) => setValue({ ...value, name: e.target.value })}
+              className='form-control'
             />
             <TextField
-              label="Maßeinheit"
-              name="unit"
+              type='file'
+              accept='image/png, image/jpeg'
+              name='image'
+              onChange={(e) => setValue({ ...value, image: e.target.files[0] })}
+              className='form-control'
+            />
+            <Dropdown
+              label='Maßeinheit'
               value={value.unit}
-              onChange={(e) => setValue({...value, unit: e.target.value})}
-              className="form-control"
+              onChange={(e) => setValue({ ...value, unit: e.target.value })}
+              options={unitOptions}
             />
-            {/* Display initial category and allow changes */}
-            <Select
-              label="Kategorie"
-              name="category"
+            <Dropdown
+              label='Kategorie'
               value={value.category}
-              onChange={(e) => setValue({...value, category: e.target.value})}
-              fullWidth
-            >
-              {categories.results?.map((category) => (
-                <MenuItem key={category.id} value={category.name}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
+              onChange={(e) => setValue({ ...value, category: e.target.value })}
+              options={categories.map((cat) => ({ value: cat.name, label: cat.name }))}
+            />
             <TextField
-              label="Beschreibung"
-              name="description"
+              label='Beschreibung'
+              name='description'
               multiline
               rows={4}
               value={value.description}
-              onChange={(e) => setValue({...value, description: e.target.value})}
-              className="form-control"
+              onChange={(e) => setValue({ ...value, description: e.target.value })}
+              className='form-control'
             />
             <TextField
-              label="EAN"
-              name="ean"
+              label='EAN'
+              name='ean'
               value={value.ean}
-              onChange={(e) => setValue({...value, ean: e.target.value})}
-              className="form-control"
+              onChange={(e) => setValue({ ...value, ean: e.target.value })}
+              className='form-control'
             />
-            {/* Display initial stock and allow changes */}
-            <Select
-              label="Lager"
-              name="stock"
+            <Dropdown
+              label='Lager'
               value={value.stock}
-              onChange={(e) => setValue({...value, stock: e.target.value})}
-              fullWidth
-            >
-              {stocks.results?.map((stock) => (
-                <MenuItem key={stock.id} value={stock.name}>
-                  {stock.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <TextField
-              value={value.on_stock} onChange={(e) => setValue({...value, on_stock: e.target.value})}
-              name="on_stock"
-              label="Verfügbar"
-              className="form-control"
+              onChange={(e) => setValue({ ...value, stock: e.target.value })}
+              options={stocks.map((stock) => ({ value: stock.name, label: stock.name }))}
             />
             <TextField
-              value={value.favorite} onChange={(e) => setValue({...value, favorite: e.target.value})}
-              label="Favorit"
-              name="favorite"
-              className="form-control"
+              label='Verfügbar'
+              name='on_stock'
+              value={value.on_stock}
+              onChange={(e) => setValue({ ...value, on_stock: e.target.value })}
+              className='form-control'
             />
-            <Button type="submit" variant="contained" color="inherit">
+            <Dropdown
+              label='Favorite'
+              value={value.favorite}
+              onChange={(e) => setValue({ ...value, favorite: e.target.value })}
+              options={colorOptions}
+            />
+            <Button type='submit' variant='contained' color='inherit'>
               Speichern
             </Button>
-            <Button type="button" variant="contained" color="inherit" onClick={() => navigate('/items')}
-                    className="float-end">
+            <Button
+              type='button'
+              variant='contained'
+              color='inherit'
+              onClick={() => navigate('/items')}
+              className='float-end'
+            >
               Zurück
             </Button>
           </form>
         </Grid>
       </Grid>
     </div>
-  );
-};
+  )
+}
