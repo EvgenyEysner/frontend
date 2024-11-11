@@ -6,7 +6,6 @@ import {Loader} from "../../UI/loader/Loader";
 import {Grid, MenuItem, Select, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
-
 export const ItemUpdate = () => {
   const params = useParams();
   const navigate = useNavigate()
@@ -23,12 +22,10 @@ export const ItemUpdate = () => {
     on_stock: '',
     favorite: '',
   });
-  const [categories, setCategories] = useState([]);
-  const [stocks, setStocks] = useState([]);
+  const [categories, setCategories] = useState('');
+  const [stocks, setStocks] = useState('');
   const [error, setError] = useState('');
   const token = useAuthStore.getState().access;
-
-  console.log("REQUEST: ", value)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,11 +61,11 @@ export const ItemUpdate = () => {
         setLoading(false);
       }
     };
-    // Fetch categories and stocks for dropdowns
+
     const fetchCategories = async () => {
       try {
         const res = await fetch('/api/v1/category', {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {Authorization: `Bearer ${token}`},
         });
         const data = await res.json();
         setCategories(data);
@@ -80,7 +77,7 @@ export const ItemUpdate = () => {
     const fetchStocks = async () => {
       try {
         const res = await fetch('/api/v1/stock', {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {Authorization: `Bearer ${token}`},
         });
         const data = await res.json();
         setStocks(data);
@@ -172,22 +169,16 @@ export const ItemUpdate = () => {
               onChange={(e) => setValue({...value, unit: e.target.value})}
               className="form-control"
             />
-            {/*<TextField*/}
-            {/*  label="Kategorie"*/}
-            {/*  name="category"*/}
-            {/*  value={value.category}*/}
-            {/*  onChange={(e) => setValue({...value, category: e.target.value})}*/}
-            {/*  className="form-control"*/}
-            {/*/>*/}
+            {/* Display initial category and allow changes */}
             <Select
               label="Kategorie"
               name="category"
               value={value.category}
-              onChange={(e) => setValue({ ...value, category: e.target.value })}
+              onChange={(e) => setValue({...value, category: e.target.value})}
               fullWidth
             >
-              {categories.results.map((category) => (
-                <MenuItem key={category.id} value={category.id}>
+              {categories.results?.map((category) => (
+                <MenuItem key={category.id} value={category.name}>
                   {category.name}
                 </MenuItem>
               ))}
@@ -208,21 +199,16 @@ export const ItemUpdate = () => {
               onChange={(e) => setValue({...value, ean: e.target.value})}
               className="form-control"
             />
-            {/*<TextField*/}
-            {/*  label="Lager"*/}
-            {/*  name="stock"*/}
-            {/*  value={value.stock} onChange={(e) => setValue({...value, stock: e.target.value})}*/}
-            {/*  className="form-control"*/}
-            {/*/>*/}
+            {/* Display initial stock and allow changes */}
             <Select
               label="Lager"
               name="stock"
               value={value.stock}
-              onChange={(e) => setValue({ ...value, stock: e.target.value })}
+              onChange={(e) => setValue({...value, stock: e.target.value})}
               fullWidth
             >
-              {stocks.results.map((stock) => (
-                <MenuItem key={stock.id} value={stock.id}>
+              {stocks.results?.map((stock) => (
+                <MenuItem key={stock.id} value={stock.name}>
                   {stock.name}
                 </MenuItem>
               ))}
@@ -242,7 +228,7 @@ export const ItemUpdate = () => {
             <Button type="submit" variant="contained" color="inherit">
               Speichern
             </Button>
-            <Button type="submit" variant="contained" color="inherit" onClick={() => navigate('/items')}
+            <Button type="button" variant="contained" color="inherit" onClick={() => navigate('/items')}
                     className="float-end">
               Zurück
             </Button>
