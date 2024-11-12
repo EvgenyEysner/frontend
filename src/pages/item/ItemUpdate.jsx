@@ -3,41 +3,17 @@ import { useNavigate, useParams } from 'react-router'
 import { useAuthStore } from '../../store/auth'
 import toast from 'react-hot-toast'
 import { Loader } from '../../UI/loader/Loader'
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import Button from '@mui/material/Button'
+import { Grid, TextField, Button } from '@mui/material'
 import { fetchCategories, fetchItem, fetchStocks, updateItem } from '../../api/api'
-
-const colorOptions = [
-  { value: '1', label: 'Rot' },
-  { value: '2', label: 'Gelb' },
-  { value: '3', label: 'Grün' },
-  { value: '4', label: 'Standard' },
-]
-
-const unitOptions = [
-  { value: '1', label: 'Stück' },
-  { value: '2', label: 'Meter' },
-  { value: '3', label: 'Rolle' },
-]
-
-const Dropdown = ({ label, value, onChange, options }) => (
-  <FormControl fullWidth>
-    <InputLabel>{label}</InputLabel>
-    <Select value={value} onChange={onChange} label={label}>
-      {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
-)
+import { Dropdown } from '../../utils/dropDown'
+import { colorOptions, unitOptions } from '../../utils/selectOptions'
+import { createHandleFileChange, createHandleInputChange } from '../../utils/handleChange'
 
 export const ItemUpdate = () => {
   const params = useParams()
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(true)
-  const [value, setValue] = useState({
+  const [itemData, setItemData] = useState({
     id: '',
     image: null,
     category: '',
@@ -64,7 +40,7 @@ export const ItemUpdate = () => {
           fetchStocks(token),
         ])
 
-        setValue({
+        setItemData({
           id: item.id,
           category: item.category,
           name: item.name,
@@ -77,8 +53,9 @@ export const ItemUpdate = () => {
         })
         setCategories(categoryData.results || [])
         setStocks(stockData.results || [])
-      } catch {
-        setError('Fehler beim Laden der Daten')
+      } catch (err) {
+        setError(`Fehler beim Laden der Daten: ${err.message}`)
+        console.error('Error loading data:', error)
       } finally {
         setLoading(false)
       }
@@ -87,29 +64,36 @@ export const ItemUpdate = () => {
     loadAllData()
   }, [params.name, token])
 
+  const handleInputChange = createHandleInputChange(setItemData)
+  const handleFileChange = createHandleFileChange(setItemData)
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const formData = new FormData()
-    Object.entries(value).forEach(([key, val]) => {
+    Object.entries(itemData).forEach(([key, val]) => {
       if (key !== 'image' || val) formData.append(key, val)
     })
-    if (value.image) formData.append('image', value.image)
+    if (itemData.image) formData.append('image', itemData.image)
 
     try {
       await updateItem(params.name, formData, token)
       toast.success('Artikel erfolgreich aktualisiert!')
       navigate('/items')
-    } catch {
-      toast.error('Fehler beim Aktualisieren des Artikels!')
+    } catch (err) {
+      toast.error(`Fehler beim Aktualisieren des Artikels: ${err.message}`)
     }
   }
 
-  if (isLoading)
+  if (isLoading || categories.length === 0 || stocks.length === 0) {
     return (
       <div className='d-flex gap-4 pt-5 justify-content-center'>
         <Loader />
       </div>
     )
+  }
+
+  const mapToDropdownOptions = (items, labelKey) =>
+    items.map((item) => ({ value: item[labelKey], label: item[labelKey] }))
 
   return (
     <div className='container mx-auto mt-5'>
@@ -119,62 +103,62 @@ export const ItemUpdate = () => {
             <TextField
               label='Name'
               name='name'
-              value={value.name}
-              onChange={(e) => setValue({ ...value, name: e.target.value })}
-              className='form-control'
+              value={itemData.name}
+              onChange={handleInputChange('name')}
+              fullWidth
             />
             <TextField
               type='file'
               accept='image/png, image/jpeg'
               name='image'
-              onChange={(e) => setValue({ ...value, image: e.target.files[0] })}
-              className='form-control'
+              onChange={handleFileChange}
+              fullWidth
             />
             <Dropdown
               label='Maßeinheit'
-              value={value.unit}
-              onChange={(e) => setValue({ ...value, unit: e.target.value })}
+              value={itemData.unit}
+              onChange={handleInputChange('unit')}
               options={unitOptions}
             />
             <Dropdown
               label='Kategorie'
-              value={value.category}
-              onChange={(e) => setValue({ ...value, category: e.target.value })}
-              options={categories.map((cat) => ({ value: cat.name, label: cat.name }))}
+              value={itemData.category}
+              onChange={handleInputChange('category')}
+              options={mapToDropdownOptions(categories, 'name')}
             />
             <TextField
               label='Beschreibung'
               name='description'
               multiline
               rows={4}
-              value={value.description}
-              onChange={(e) => setValue({ ...value, description: e.target.value })}
-              className='form-control'
+              value={itemData.description}
+              onChange={handleInputChange('description')}
+              fullWidth
             />
             <TextField
               label='EAN'
               name='ean'
-              value={value.ean}
-              onChange={(e) => setValue({ ...value, ean: e.target.value })}
-              className='form-control'
+              value={itemData.ean}
+              onChange={handleInputChange('ean')}
+              fullWidth
             />
             <Dropdown
               label='Lager'
-              value={value.stock}
-              onChange={(e) => setValue({ ...value, stock: e.target.value })}
-              options={stocks.map((stock) => ({ value: stock.name, label: stock.name }))}
+              value={itemData.stock}
+              onChange={handleInputChange('stock')}
+              options={mapToDropdownOptions(stocks, 'name')}
             />
             <TextField
               label='Verfügbar'
               name='on_stock'
-              value={value.on_stock}
-              onChange={(e) => setValue({ ...value, on_stock: e.target.value })}
-              className='form-control'
+              value={itemData.on_stock}
+              onChange={handleInputChange('on_stock')}
+              fullWidth
             />
             <Dropdown
               label='Favorite'
-              value={value.favorite}
-              onChange={(e) => setValue({ ...value, favorite: e.target.value })}
+              value={itemData.favorite}
+              onChange={handleInputChange('favorite')}
               options={colorOptions}
             />
             <Button type='submit' variant='contained' color='inherit'>
