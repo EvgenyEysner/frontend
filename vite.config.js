@@ -16,6 +16,7 @@ export default defineConfig({
     },
     proxy: {
       // '/api': 'https://demo.softeis.net',
+      // '/api': 'https://admin.softeis.net',
       '/api': 'http://127.0.0.1:8000',
     },
     host: true,
@@ -25,6 +26,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       // '/api': 'https://demo.softeis.net',
+      // '/api': 'https://admin.softeis.net',
       '/api': 'http://127.0.0.1:8000',
     },
     watch: {
