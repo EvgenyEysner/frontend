@@ -14,14 +14,14 @@ export const Item = () => {
   const [hasMore, setHasMore] = useState(true) // Specifies whether further articles can be loaded
   const observer = useRef() // Reference for the Intersection Observer
   const token = useAuthStore.getState().access
-  const { isAuth } = useAuthStore()
+  const {isAuth} = useAuthStore()
 
   const lastItemRef = useCallback(
     (node) => {
       if (observer.current) observer.current.disconnect()
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          setPage((prevPage) => prevPage + 1) // Load next site
+          setPage((prevPage) => prevPage + 1) // Load next page
         }
       })
       if (node) observer.current.observe(node)
@@ -35,11 +35,8 @@ export const Item = () => {
       try {
         const response = await fetch(`/api/v1/items/?page=${page}`, {
           method: 'GET',
-          mode: 'cors',
-          body: JSON.stringify(),
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
             Authorization: `Bearer ${token}`,
           },
         })
@@ -49,7 +46,12 @@ export const Item = () => {
         const data = await response.json()
         const newItems = data.results
 
-        setData((prevItems) => [...prevItems, ...newItems])
+        setData((prevItems) => {
+          const ids = new Set(prevItems.map((item) => item.id))
+          const filteredItems = newItems.filter((item) => !ids.has(item.id))
+          return [...prevItems, ...filteredItems]
+        })
+
         if (newItems.length === 0 || newItems.length < 10) {
           setHasMore(false) // No more items available
         }
@@ -70,11 +72,8 @@ export const Item = () => {
       try {
         const response = await fetch(`/api/v1/me/`, {
           method: 'GET',
-          mode: 'cors',
-          body: JSON.stringify(),
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
             Authorization: `Bearer ${token}`,
           },
         })
@@ -92,24 +91,26 @@ export const Item = () => {
     }
     fetchUserMe()
   }, [])
-  if (isLoading)
+
+  if (isLoading && page === 1) {
     return (
       <div className='d-flex gap-4 pt-5 justify-content-center'>
-        <Loader />
+        <Loader/>
       </div>
     )
+  }
 
-  if (!isAuth) return <Navigate to='/' />
+  if (!isAuth) return <Navigate to='/'/>
 
   return (
     <>
       {data.map((item, index) => {
-        if (item.length === index + 1) {
+        if (data.length === index + 1) {
           return (
-            <Grid spacing={2} justifyContent='center'>
+            <Grid container spacing={2} justifyContent='center' key={item.id}>
               <Grid item xs={12} md={6} mt={3}>
-                <Card key={item.id} ref={lastItemRef}>
-                  <CardMedia component='img' height='140' image={item.image} alt={item.name} />
+                <Card ref={lastItemRef}>
+                  <CardMedia component='img' height='140' image={item.image} alt={item.name}/>
                   <CardContent>
                     <Typography variant='h5' component='div'>
                       {item.name}
@@ -136,10 +137,10 @@ export const Item = () => {
           )
         } else {
           return (
-            <Grid spacing={2} justifyContent='center' ref={lastItemRef} key={item.id} >
+            <Grid container spacing={2} justifyContent='center' key={item.id}>
               <Grid item xs={12} md={6} mt={3}>
                 <Card>
-                  <CardMedia component='img' height='140' image={item.image} alt={item.name} />
+                  <CardMedia component='img' height='140' image={item.image} alt={item.name}/>
                   <CardContent>
                     <Typography variant='h5' component='div'>
                       {item.name}
@@ -161,8 +162,8 @@ export const Item = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Link to={`/edit-item/${item.ean}`} style={{ textDecoration: 'none' }}>
-                      {user.perms === 4 ? <EditIcon color='action' fontSize='large' /> : null}
+                    <Link to={`/edit-item/${item.ean}`} style={{textDecoration: 'none'}}>
+                      {user.perms === 4 ? <EditIcon color='action' fontSize='large'/> : null}
                     </Link>
                   </CardActions>
                 </Card>
@@ -171,7 +172,7 @@ export const Item = () => {
           )
         }
       })}
-      ){isLoading && <p>Loading...</p>}
+      {isLoading && <p>Loading...</p>}
       {!hasMore && <p>Keine weiteren Artikel</p>}
     </>
   )
