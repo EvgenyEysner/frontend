@@ -1,4 +1,4 @@
-const API_BASE_URL = '/api/v1';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const loginRequest = async (email, password) => {
   const url = `${API_BASE_URL}/token/` // You may need to specify the full URL depending on your setup
