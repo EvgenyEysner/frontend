@@ -1,101 +1,43 @@
-import {ShoppingCart} from '@mui/icons-material'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {useNavigate, useParams} from 'react-router'
-import {Item} from '../../components/Item/Item'
-import {useCartStore} from '../../store/cart'
-import {Loader} from '../../UI/loader/Loader'
+import React, {useMemo} from 'react';
+import {useNavigate, useParams} from 'react-router';
+import {Item} from '../../components/Item/Item';
+import {useCartStore} from '../../store/cart';
+import {Loader} from '../../UI/loader/Loader';
+import {ScanAgain} from "../../components/Scanner/ScanAgain";
+import {useFetchItem} from "../../hooks/useFetchItem";
 import styles from './home.module.css'
-import {useAuthStore} from "../../store/auth";
+import {ShoppingCart} from "@mui/icons-material";
 
 export const Home = () => {
-  const navigate = useNavigate()
-  const button = useRef(null)
-  const [isLoading, setLoading] = useState(true)
-  const [data, setData] = useState(null)
-  const [error, setError] = useState('')
-  const params = useParams()
-  const token = useAuthStore.getState().access
+  const navigate = useNavigate();
+  const params = useParams();
+  const {isLoading, data, error} = useFetchItem(params.name);
+  const {cart} = useCartStore();
 
-  const {cart} = useCartStore()
-  const getTotalQuantity = useMemo(() => {
-    let total = 0
-    cart.forEach((item) => {
-      total += item.quantity
-    })
-    return total
-  }, [cart])
+  const getTotalQuantity = useMemo(
+    () => cart.reduce((total, item) => total + item.quantity, 0),
+    [cart]
+  );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const res = await fetch(`/api/v1/item/${params.name}`, {
-          method: 'GET',
-          mode: 'cors',
-          body: JSON.stringify(),
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        if (!res.ok) throw new Error()
-
-        const result = await res.json()
-        setData(result)
-      } catch (e) {
-        setError('Artikel nicht gefunden')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [params.name, token])
-
-  if (isLoading)
+  if (isLoading) {
     return (
-      <div className='d-flex gap-4 pt-5 justify-content-center'>
+      <div className="d-flex gap-4 pt-5 justify-content-center">
         <Loader/>
       </div>
-    )
+    );
+  }
 
-  if (error.length !== 0 || !data)
-    return (
-      <>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            paddingTop: '30px',
-          }}
-        >
-          <p className={styles.result__error}>{error}</p>
-        </div>
-        <div className={styles.result__button} ref={button}>
-          <button onClick={() => navigate('/scan')}>Scan again</button>
-        </div>
-      </>
-    )
+  if (error || !data) {
+    return <ScanAgain error={error} navigate={navigate}/>;
+  }
 
   return (
     <>
-      <Item
-        id={data.id}
-        name={data.name}
-        description={data.description}
-        ean={data.ean}
-        stock={data.stock}
-        onStock={data.on_stock}
-        category={data.category}
-        image={data.image}
-      />
+      <Item {...data} />
       <div className={styles.shopping__cart} onClick={() => navigate('/cart')}>
         <ShoppingCart id='cartIcon' style={{width: '28px', height: '28px', color: 'white'}}/>
         {getTotalQuantity !== 0 && <p>{getTotalQuantity > 99 ? '99+' : getTotalQuantity}</p>}
       </div>
     </>
-  )
-}
+  );
+};
