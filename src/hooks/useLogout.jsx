@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/auth'
 
 export default function useLogout() {
@@ -6,7 +6,11 @@ export default function useLogout() {
   const { logout } = useAuthStore()
 
   return () => {
-    logout()
-    navigate('/login')
+    try {
+      logout()
+      navigate('/login', { replace: true }) // Ensure history is cleared on logout
+    } catch (error) {
+      console.error('Error during logout:', error)
+    }
   }
 }

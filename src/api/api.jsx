@@ -1,7 +1,7 @@
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const loginRequest = async (email, password) => {
-  const url = `${API_BASE_URL}/token/` // You may need to specify the full URL depending on your setup
+  const url = `${API_BASE_URL}/token/`;
   const options = {
     method: 'POST',
     mode: 'cors',
@@ -10,18 +10,28 @@ export const loginRequest = async (email, password) => {
     },
     body: JSON.stringify({ email, password }),
     credentials: 'include',
-  }
+  };
+
+  const controller = new AbortController(); // For request timeout handling
+  const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
   try {
-    const response = await fetch(url, options)
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timeout);
+
     if (!response.ok) {
-      throw new Error('Network response was not ok')
+      const errorDetails = await response.json();
+      throw new Error(`Login request failed: ${errorDetails.message || response.statusText}`);
     }
-    return await response.json() // Assuming the server responds with JSON data
+
+    return await response.json();
   } catch (error) {
-    throw new Error(`Login request failed: ${error.message}`)
+    if (error.name === 'AbortError') {
+      throw new Error('Login request timed out');
+    }
+    throw new Error(`Login request failed: ${error.message}`);
   }
-}
+};
 
 export const fetchItem = async (name, token) => {
   const response = await fetch(`${API_BASE_URL}/item/${name}`, {

@@ -1,58 +1,59 @@
-import {useState} from 'react';
-import {toast} from 'react-hot-toast';
-import {FaRegEye, FaRegEyeSlash} from 'react-icons/fa6';
-import {Navigate, useNavigate} from 'react-router-dom';
-import {loginRequest} from '../../api/api';
-import {useAuthStore} from '../../store/auth';
+import { useState } from 'react'
+import { toast } from 'react-hot-toast'
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { loginRequest } from '../../api/api'
+import { useAuthStore } from '../../store/auth'
 
-import {Loader} from '../../UI/loader/Loader';
-import styles from './login.module.css';
-import {TextField, Typography} from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
+import { Loader } from '../../UI/loader/Loader'
+import styles from './login.module.css'
+import { TextField, Typography } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const {isAuth, setToken} = useAuthStore();
-  const [isVisiblePassword, setVisiblePassword] = useState(false);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate()
+  const { isAuth, setToken } = useAuthStore()
+  const [isVisiblePassword, setVisiblePassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
+    event.preventDefault()
+    setLoading(true)
+    setError(null)
+
     try {
-      const response = await loginRequest(email, password);
+      const response = await loginRequest(email, password)
 
       if (response.access && response.refresh) {
-        setToken(response.access, response.refresh);
-        toast.success('Login successful!');
-        navigate('/');
+        setToken(response.access, response.refresh)
+        toast.success('Login erfolgreich!')
+        navigate('/')
       } else {
-        throw new Error('Invalid response format');
+        throw new Error('Invalid response format')
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || 'Login failed, please try again.';
-      setError(errorMessage);
-      toast.error('There was an error, please try again.');
+      const errorMessage =
+        error.response?.data?.message || error.message || 'Login failed, please try again.'
+      setError(errorMessage)
+      toast.error(errorMessage)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (loading) {
     return (
       <div className={styles.wrapper}>
-        <Loader/>
+        <Loader />
       </div>
-    );
+    )
   }
 
-  if (isAuth) return <Navigate to='/'/>;
+  if (isAuth) return <Navigate to='/' />
 
   return (
     <form className='container mx-auto mt-10' onSubmit={handleSubmit}>
@@ -95,7 +96,7 @@ export const Login = () => {
               aria-label='toggle password visibility'
               onClick={() => setVisiblePassword(!isVisiblePassword)}
             >
-              {isVisiblePassword ? <FaRegEyeSlash/> : <FaRegEye/>}
+              {isVisiblePassword ? <FaRegEyeSlash /> : <FaRegEye />}
             </IconButton>
           ),
         }}
@@ -118,5 +119,5 @@ export const Login = () => {
         </Typography>
       )}
     </form>
-  );
-};
+  )
+}

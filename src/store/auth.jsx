@@ -1,6 +1,6 @@
-import {create} from "zustand";
-import {persist} from "zustand/middleware";
-import {jwtDecode} from 'jwt-decode'; // Korrigierter Import
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { jwtDecode } from 'jwt-decode'
 
 export const useAuthStore = create(
   persist(
@@ -8,31 +8,52 @@ export const useAuthStore = create(
       access: '',
       refresh: '',
       isAuth: false,
-      setToken: (access, refresh) =>
+
+      // Set tokens and update authentication status
+      setToken: (access, refresh) => {
         set(() => ({
           access,
           refresh,
           isAuth: !!access && !!refresh,
-        })),
-      logout: () => {
-        set(() => ({access: '', refresh: '', isAuth: false}));
-        localStorage.removeItem('auth');
+        }))
+        // Check token validity on setting
+        if (!get().isTokenValid()) {
+          set(() => ({ access: '', refresh: '', isAuth: false }))
+        }
       },
+
+      // Logout and clear tokens
+      logout: () => {
+        set(() => ({ access: '', refresh: '', isAuth: false }))
+        localStorage.removeItem('auth')
+      },
+
+      // Check if the access token is valid
       isTokenValid: () => {
-        const {access} = get(); // Verwende get(), um den aktuellen Zustand zu erhalten
-        if (!access) return false;
+        const { access } = get()
+        if (!access) return false
 
         try {
-          const decoded = jwtDecode(access);
-          const currentTime = Date.now() / 1000; // Zeit in Sekunden
-          return decoded.exp > currentTime; // Vergleiche das Ablaufdatum mit der aktuellen Zeit
+          const decoded = jwtDecode(access)
+          const currentTime = Date.now() / 1000
+          const isValid = decoded.exp > currentTime
+          if (!isValid) {
+            get().logout() // Auto logout if token is invalid
+          }
+          return isValid
         } catch (error) {
-          return false;
+          console.error('Token decoding failed:', error)
+          return false
         }
       },
     }),
     {
-      name: "auth"
-    }
-  )
-);
+      name: 'auth',
+      onRehydrateStorage: () => (state) => {
+        if (state && state.access && !get().isTokenValid()) {
+          state.logout() // Auto logout if token is invalid on rehydrate
+        }
+      },
+    },
+  ),
+)
