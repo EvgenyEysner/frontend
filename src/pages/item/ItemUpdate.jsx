@@ -109,7 +109,7 @@ export const ItemUpdate = () => {
             />
             <TextField
               type='file'
-              accept='image/png, image/jpeg'
+              accept='image/*'
               name='image'
               onChange={handleFileChange}
               fullWidth

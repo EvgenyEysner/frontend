@@ -50,6 +50,10 @@ export default defineConfig({
     // basicSsl(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        clientsClaim: true,
+        skipWaiting: true,
+      },
       devOptions: {
         enabled: true,
       },
