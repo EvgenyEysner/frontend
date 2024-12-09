@@ -78,3 +78,18 @@ export const updateItem = async (name, formData, token) => {
   return await response.json();
 };
 
+export const searchItem = async (query, token) => {
+  const response = await fetch(`${API_BASE_URL}/items/?search=${encodeURIComponent(query)}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) throw new Error('Item not found');
+  return await response.json();
+};
+
+

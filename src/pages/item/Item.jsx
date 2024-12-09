@@ -4,6 +4,7 @@ import {useAuthStore} from '../../store/auth'
 import EditIcon from '@mui/icons-material/Edit'
 import {Link, Navigate} from 'react-router-dom'
 import {Card, CardActions, CardContent, CardMedia, Grid, Typography} from '@mui/material'
+import {ItemSearch} from "../../components/Header/Search";
 
 export const Item = () => {
   const [data, setData] = useState([])
@@ -104,6 +105,7 @@ export const Item = () => {
 
   return (
     <>
+      <ItemSearch/>
       {data.map((item, index) => {
         if (data.length === index + 1) {
           return (

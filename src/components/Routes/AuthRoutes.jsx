@@ -14,6 +14,7 @@ import {ReturnScanner} from "../../pages/scanner/ReturnScanner";
 import {ReturnRequest} from "../../pages/home/ReturnRequest";
 import CartReturn from "../../pages/cart/CartReturn";
 import {AddItem} from "../../pages/item/AddItem";
+import {ItemDetail} from "../../pages/item/ItemDetail";
 
 export const AuthRoutes = () => {
   return (
@@ -27,6 +28,7 @@ export const AuthRoutes = () => {
           <Route path='/items' element={<Item/>}/>
           <Route path='/add-item' element={<AddItem/>}/>
           <Route path='/edit-item/:name' element={<ItemUpdate/>}/>
+          <Route path='/item-details/:name' element={<ItemDetail/>}/>
           <Route path='/result/:name' element={<Home/>}/>
           <Route path='/return-request' element={<Return/>}/>
           <Route path='/return-request/scan' element={<ReturnScanner/>}/>

@@ -1,28 +1,85 @@
-.scanner {
-  width: 60%;
-  margin: 0 auto;
-  margin-top: 30px;
-  border-radius: 60px;
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+  color: #343a40;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Header */
+.title {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #007bff;
+}
+
+/* Scanner Box */
+.scannerBox {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  height: 400px;
+  border: 2px solid #007bff;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media screen and (max-width: 992px) {
-  .scanner {
-    border-radius: 42px;
-  }
+/* Scanner */
+.scanner {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media screen and (max-width: 768px) {
-  .scanner {
-    border-radius: 26px;
-    width: 80%;
-  }
+/* Error Message */
+.error {
+  margin-top: 1rem;
+  color: #dc3545;
+  font-weight: 500;
+  text-align: center;
 }
 
-@media screen and (max-width: 576px) {
-  .scanner {
-    border-radius: 16px;
-    width: 100%;
-    margin-top: 20px;
-  }
+/* Instruction */
+.instruction {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #6c757d;
 }
+
+
+
+/*@media screen and (max-width: 992px) {*/
+/*  .scanner {*/
+/*    border-radius: 42px;*/
+/*  }*/
+/*}*/
+
+/*@media screen and (max-width: 768px) {*/
+/*  .scanner {*/
+/*    border-radius: 26px;*/
+/*    width: 80%;*/
+/*  }*/
+/*}*/
+
+/*@media screen and (max-width: 576px) {*/
+/*  .scanner {*/
+/*    border-radius: 16px;*/
+/*    width: 100%;*/
+/*    margin-top: 20px;*/
+/*  }*/
+/*}*/

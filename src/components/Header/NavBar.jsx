@@ -2,7 +2,7 @@ import {SideBar} from "./Drawler";
 
 export const NavBar = () => {
     return (
-        <nav className="bg-gray-800">
+        <nav className="bg-gray-800 sticky-top">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
                     <SideBar/>

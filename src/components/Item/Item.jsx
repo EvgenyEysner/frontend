@@ -6,10 +6,13 @@ import styles from './item.module.css'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
+import React from "react";
+import {useNavigate} from "react-router";
 
 export const Item = ({id, name, image, description, ean, stock, onStock, category}) => {
   const {cart, addToCart, incrementQuantity, decrementQuantity, removeItem} = useCartStore()
   const currentItem = cart.find((el) => el.id === id)
+  const navigate = useNavigate();
 
   return (
     <div className='bg-white'>
@@ -121,6 +124,18 @@ export const Item = ({id, name, image, description, ean, stock, onStock, categor
                 Hinzufügen
               </Button>
             )}
+            <Button
+              className='float-end'
+              aria-label='edit item'
+              size='small'
+              variant='contained'
+              color='inherit'
+              onClick={() =>
+                navigate(`/edit-item/${ean}`)
+              }
+            >
+              Bearbeiten
+            </Button>
             {currentItem && (
               <>
                 <div className={styles.cartItem__incrDec}>
