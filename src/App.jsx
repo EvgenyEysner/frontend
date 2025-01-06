@@ -6,6 +6,8 @@ import {useRegisterSW} from 'virtual:pwa-register/react';
 
 function App() {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [hasConfirmedUpdate, setHasConfirmedUpdate] = useState(false);  // Neuen Zustand für Bestätigung hinzufügen
+
   const {needRefresh, updateServiceWorker} = useRegisterSW({
     onRegisteredSW(swUrl, registration) {
       console.log('Service Worker registriert:', swUrl);
@@ -13,23 +15,25 @@ function App() {
         if (registration) {
           registration.update();
         }
-      }, 60 * 60 * 1000); // Jede Stunde prüfen
+      }, 60 * 60 * 1000); // Check every hour
     },
     onRegisterError(error) {
       console.error('Service Worker Fehler:', error);
     },
   });
 
-  // UX: Nutzer-Feedback bei Service Worker Update
+  // UX: User feedback for Service Worker Update
   useEffect(() => {
-    if (needRefresh) {
-      if (window.confirm('Neue Version verfügbar! Möchtest du die Anwendung aktualisieren?')) {
-        updateServiceWorker(true); // Erzwingt das Update sofort
+    if (needRefresh && !hasConfirmedUpdate) {  // Only display if the user has not yet confirmed
+      const userConfirmed = window.confirm('Neue Version verfügbar! Möchtest du die Anwendung aktualisieren?');
+      if (userConfirmed) {
+        updateServiceWorker(true); // Forces the update immediately
       }
+      setHasConfirmedUpdate(true);  // Set confirmation
     }
-  }, [needRefresh, updateServiceWorker]);
+  }, [needRefresh, updateServiceWorker, hasConfirmedUpdate]);
 
-  // Debounced Resize-Event für Performance-Optimierung
+  // Debounced resize event for performance optimization
   useEffect(() => {
     const debounce = (func, wait) => {
       let timeout;
