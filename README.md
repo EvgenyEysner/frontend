@@ -30,7 +30,7 @@ Stocky is an inventory management and barcode scanner application developed with
 
 3. Create a .env file in the root directory and add the required environment variables:
    ```env
-   VITE_BACKEND_URL=http://127.0.0.1:8000
+   VITE_BACKEND_URL=http://127.0.0.1:8000/api/v1
    ```
 
 ## Usage
